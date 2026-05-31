@@ -1,77 +1,82 @@
 import { useState } from "react";
 
-function Menu() {
+function Menu({ setPage }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <div className="relative">
-      {/* Overlay */}
+const menuItems = [
+  { icon: "🏠", label: "Home", page: "home" },
+  { icon: "🩸", label: "Find Donors", page: "donors" },
+  { icon: "❤️", label: "Request Blood", page: "request" },
+  { icon: "ℹ️", label: "About", page: "about" },
+  {icon: "⚙️",label: "Admin",page: "admin",},
+];
 
+  return (
+    <div className="absolute left-3 top-1/2 -translate-y-1/2">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="relative z-30 w-10 h-10 rounded-2xl bg-[#B3001B] border border-white/10 shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-105 hover:bg-[#990017]"
+      >
+        <div className="flex flex-col justify-between h-4 w-5">
+          <span className="w-5 h-0.5 bg-white rounded-full"></span>
+
+          <span className="w-5 h-0.5 bg-white rounded-full"></span>
+
+          <span className="w-5 h-0.5 bg-white rounded-full"></span>
+        </div>
+      </button>
+
+      {/* Overlay */}
       <div
         onClick={() => setIsOpen(false)}
-        className={`fixed inset-0 bg-black/30 backdrop-blur-sm z-40 transition-all duration-300 ${
-          isOpen ? "opacity-70 visible" : "opacity-0 invisible"
+        className={`fixed inset-0 bg-black/30 backdrop-blur-sm z-10 transition-all duration-300 ${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
-      ></div>
+      />
 
-      {/* Menu Container */}
-
+      {/* Menu Drawer */}
       <div
-        className={`fixed top-5 left-5 bg-red-700 rounded-3xl shadow-2xl overflow-hidden transition-all duration-500 ease-out z-50 ${
-          isOpen ? "w-72 h-[90svh] pt-20 px-5 pb-10" : "w-14 h-14"
+        className={`fixed -top-2 -left-3 w-[85vw] max-w-[340px] md:max-w-[400px] h-screen z-20 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isOpen
+            ? "translate-x-0 opacity-100"
+            : "-translate-x-full opacity-0 pointer-events-none"
         }`}
       >
-        {/* Hamburger */}
+        <div className="h-full bg-gradient-to-b from-[#B3001B] to-[#8A0015] rounded-r-3xl border-r border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.35)] p-4 pt-20 flex flex-col">
+          {/* Header */}
+          <div className="pb-4 mb-4 border-b border-white/10">
+            <h2 className="text-white text-xl md:text-2xl font-bold">
+              Thudipp
+            </h2>
 
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="absolute top-0 left-0 w-14 h-14 flex items-center justify-center z-[60]"
-        >
-          <div className="w-7 flex flex-col gap-1.5">
-            <span
-              className={`h-1 bg-white rounded-full transition-all duration-300 ${
-                isOpen ? "rotate-45 translate-y-2.5" : ""
-              }`}
-            ></span>
-
-            <span
-              className={`h-1 bg-white rounded-full transition-all duration-300 ${
-                isOpen ? "opacity-0" : ""
-              }`}
-            ></span>
-
-            <span
-              className={`h-1 bg-white rounded-full transition-all duration-300 ${
-                isOpen ? "-rotate-45 -translate-y-2.5" : ""
-              }`}
-            ></span>
+            <p className="text-white/60 text-sm mt-1">
+              Donate Blood. Save Lives.
+            </p>
           </div>
-        </button>
 
-        {/* Menu Items */}
+          {/* Menu Items */}
+          <div className="flex flex-col gap-2 flex-1">
+            {menuItems.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => {
+                  setPage(item.page);
+                  setIsOpen(false);
+                }}
+                className="flex items-center gap-3 px-4 py-3 md:px-5 md:py-4 rounded-2xl text-white hover:bg-white/10 transition-all duration-200 text-left"
+              >
+                <span className="text-lg md:text-xl">{item.icon}</span>
+                <span className="font-medium">{item.label}</span>
+              </button>
+            ))}
+          </div>
 
-        <div
-          className={`flex flex-col justify-evenly h-full transition-all duration-500 ${
-            isOpen
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-5 pointer-events-none"
-          }`}
-        >
-          <button className="w-full text-left p-4 rounded-2xl bg-white/90 hover:bg-white active:scale-[0.98] transition font-semibold text-gray-700">
-            🏠 Home
-          </button>
-
-          <button className="w-full text-left p-4 rounded-2xl bg-white/90 hover:bg-white active:scale-[0.98] transition font-semibold text-gray-700">
-            🩸 Donors
-          </button>
-
-          <button className="w-full text-left p-4 rounded-2xl bg-white/90 hover:bg-white active:scale-[0.98] transition font-semibold text-gray-700">
-            🚨 Emergency
-          </button>
-
-          <button className="w-full text-left p-4 rounded-2xl bg-white/90 hover:bg-white active:scale-[0.98] transition font-semibold text-gray-700">
-            ⚙️ Admin
-          </button>
+          {/* Footer */}
+          <div className="pt-4 h-20 border-t border-white/10">
+            <button className="w-full bg-white text-[#B3001B] font-semibold py-3 md:py-4 rounded-2xl shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+              Donate Now ❤️
+            </button>
+          </div>
         </div>
       </div>
     </div>
