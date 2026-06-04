@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase";
 
 function Donors() {
+  const navigate = useNavigate();
+
   const [donors, setDonors] = useState([]);
   const [bloodGroup, setBloodGroup] = useState("");
 
   useEffect(() => {
     async function fetchDonors() {
-      const { data, error } = await supabase.from("donors").select("*");
+      const { data, error } = await supabase
+        .from("donors")
+        .select("*")
+        .eq("archived", false);
 
       if (error) {
         console.error(error);
         return;
       }
 
-      setDonors(data);
+      setDonors(data || []);
     }
 
     fetchDonors();
@@ -27,7 +33,6 @@ function Donors() {
   return (
     <div className="min-h-screen bg-[#F8F8F8] px-4 py-6">
       <div className="max-w-md mx-auto">
-        {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-black text-[#B3001B]">Find Donors</h1>
 
@@ -82,14 +87,6 @@ function Donors() {
                   </h2>
 
                   <p className="mt-1 text-sm text-gray-500">📍 {donor.place}</p>
-
-                  <p
-                    className={`mt-2 text-sm font-medium ${
-                      donor.available ? "text-green-600" : "text-red-500"
-                    }`}
-                  >
-                    {donor.available ? "🟢 Available" : "🔴 Not Available"}
-                  </p>
                 </div>
 
                 <div className="flex items-center justify-center min-w-[60px] h-9 rounded-xl bg-[#B3001B] text-white font-bold text-sm">
@@ -97,14 +94,20 @@ function Donors() {
                 </div>
               </div>
 
-              <a
-                href={`tel:${donor.phone}`}
-                className="mt-5 flex items-center justify-center w-full h-11 rounded-2xl bg-[#B3001B] text-white font-semibold transition-all duration-200 hover:opacity-90"
+              <button
+                onClick={() => navigate("/login")}
+                className="mt-4 w-full bg-[#B3001B] text-white py-3 rounded-xl font-semibold hover:opacity-90 transition"
               >
-                📞 Call Donor
-              </a>
+                Contact Volunteer
+              </button>
             </div>
           ))}
+
+          {filteredDonors.length === 0 && (
+            <div className="bg-white rounded-3xl p-6 text-center shadow-md">
+              No donors found
+            </div>
+          )}
         </div>
       </div>
     </div>
