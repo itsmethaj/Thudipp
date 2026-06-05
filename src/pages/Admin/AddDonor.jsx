@@ -96,10 +96,10 @@ const [formData, setFormData] = useState({
 
   return (
     <div className="min-h-screen pt-25 bg-[#F8F8F8] p-4">
-      <div className="bg-white rounded-3xl text-center p-6 shadow-sm mb-5">
-        <h1 className="text-3xl font-black text-[#B3001B]">Add Donor</h1>
+      <div className="bg-white rounded-3xl text-center p-6 mx-auto max-w-6xl shadow-sm mb-5">
+        <h1 className="text-3xl font-black text-[#B3001B] ">Add Donor</h1>
       </div>
-      <div className="max-w-lg mx-auto bg-white rounded-3xl p-6 shadow-md">
+      <div className="max-w-5xl mx-auto bg-white rounded-3xl p-6 shadow-md">
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"

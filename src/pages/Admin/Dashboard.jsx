@@ -11,18 +11,18 @@ import {
   ClipboardList,
   LogOut,
   ChevronRight,
+  Image, // Imported for the new banner management card
 } from "lucide-react";
 
 function Dashboard() {
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
-
   const permissions = JSON.parse(localStorage.getItem("permissions")) || {};
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center text-gray-500 font-bold">
         Access Denied
       </div>
     );
@@ -36,7 +36,6 @@ function Dashboard() {
       page: user.role === "admin" ? "/admin/add-donor" : "/volunteer/add-donor",
       permission: "add_donor",
     },
-
     {
       title: "View Donors",
       description: "Manage donor records",
@@ -45,7 +44,6 @@ function Dashboard() {
         user.role === "admin" ? "/admin/view-donors" : "/volunteer/view-donors",
       permission: "view_donors",
     },
-
     {
       title: "Archive",
       description: "Archived donor records",
@@ -54,7 +52,6 @@ function Dashboard() {
       permission: "archive_donor",
       adminOnly: true,
     },
-
     {
       title: "Export PDF",
       description: "Generate donor reports",
@@ -63,7 +60,15 @@ function Dashboard() {
         user.role === "admin" ? "/admin/export-pdf" : "/volunteer/export-pdf",
       permission: "export_pdf",
     },
-
+    /* 🚀 NEW: Admin-only Banner Upload Management Card */
+    {
+      title: "Manage Banners",
+      description: "Upload homepage carousel sliders",
+      icon: Image,
+      page: "/admin/manage-banners",
+      permission: "manage_banners", // Fallback permission string if needed later
+      adminOnly: true,
+    },
     {
       title: "Access Control",
       description: "Manage volunteers",
@@ -72,7 +77,6 @@ function Dashboard() {
       permission: "access_control",
       adminOnly: true,
     },
-
     {
       title: "Activity Logs",
       description: "Track all actions",
@@ -87,9 +91,7 @@ function Dashboard() {
 
   const visibleActions = actions.filter((action) => {
     if (user.role === "admin") return true;
-
     if (action.adminOnly) return false;
-
     return permissions[action.permission];
   });
 
@@ -97,16 +99,14 @@ function Dashboard() {
     <div className="min-h-screen pt-25 bg-[#F6F7FB] p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-
-        <div className="bg-white rounded-3xl text-center p-6 shadow-sm mb-5">
+        <div className="bg-white rounded-3xl text-center p-6 shadow-sm mb-5 border border-gray-100/40">
           <h1 className="text-3xl font-black text-[#B3001B]">
             {user.role === "admin" ? "Admin Dashboard" : "Volunteer Dashboard"}
           </h1>
         </div>
 
         {/* Action Cards */}
-
-        <div className="grid grid-cols-2 gap-4 mb-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-5">
           {visibleActions.map((action) => {
             const Icon = action.icon;
 
@@ -122,10 +122,12 @@ function Dashboard() {
                   shadow-sm
                   border
                   border-gray-100
-                  hover:shadow-lg
+                  hover:shadow-md
+                  hover:border-red-100/50
                   transition-all
                   duration-300
                   text-left
+                  group
                 "
               >
                 <div className="flex items-start justify-between">
@@ -137,17 +139,23 @@ function Dashboard() {
                       flex
                       items-center
                       justify-center
+                      transition-colors
+                      group-hover:bg-[#B3001B]/5
                     "
                   >
                     <Icon size={22} className="text-[#B3001B]" />
                   </div>
 
-                  <ChevronRight size={18} className="text-gray-400" />
+                  <ChevronRight
+                    size={18}
+                    className="text-gray-400 transition-transform group-hover:translate-x-0.5"
+                  />
                 </div>
 
-                <h3 className="font-bold text-gray-900 mt-4">{action.title}</h3>
-
-                <p className="text-xs text-gray-500 mt-1">
+                <h3 className="font-bold text-gray-900 mt-4 group-hover:text-[#B3001B] transition-colors">
+                  {action.title}
+                </h3>
+                <p className="text-xs text-gray-500 mt-1 leading-relaxed">
                   {action.description}
                 </p>
               </button>
@@ -155,12 +163,10 @@ function Dashboard() {
           })}
         </div>
 
-        {/* Analytics */}
-
+        {/* Analytics Section Component */}
         <Analytics />
 
         {/* Logout */}
-
         <button
           onClick={() => {
             localStorage.removeItem("user");
@@ -180,6 +186,8 @@ function Dashboard() {
             items-center
             justify-center
             gap-2
+            shadow-sm
+            active:scale-[0.99]
             transition-all
           "
         >
