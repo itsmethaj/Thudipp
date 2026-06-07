@@ -49,7 +49,6 @@ function Analytics() {
   return (
     <div className="w-full px-2 sm:px-6 max-w-6xl mx-auto bg-gray-50/50 min-h-screen py-6">
       <div className="space-y-4">
-        {/* Header Title Section */}
         <div className="px-2 mb-2">
           <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
             Overview
@@ -58,10 +57,7 @@ function Analytics() {
             Real-time donor status database metrics
           </p>
         </div>
-
-        {/* Forced 2 Columns and 1 Row on Mobile and Desktop */}
         <div className="grid grid-cols-2 gap-3 sm:gap-6">
-          {/* Card 1: Availability */}
           <div className="bg-white rounded-2xl p-3 sm:p-6 border border-gray-100 shadow-sm flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between border-b border-gray-50 pb-2 sm:pb-3 mb-3">
@@ -84,7 +80,6 @@ function Analytics() {
               </div>
 
               <div className="space-y-2 sm:space-y-3 mt-4">
-                {/* Available Indicator */}
                 <div>
                   <div className="flex justify-between text-[10px] sm:text-xs font-medium mb-1">
                     <span className="text-gray-500">Ready to Donate</span>
@@ -104,8 +99,6 @@ function Analytics() {
                     />
                   </div>
                 </div>
-
-                {/* Unavailable Indicator */}
                 <div>
                   <div className="flex justify-between text-[10px] sm:text-xs font-medium mb-1">
                     <span className="text-gray-500">Unavailable</span>
@@ -129,7 +122,6 @@ function Analytics() {
             </div>
           </div>
 
-          {/* Card 2: Blood Groups */}
           <div className="bg-white rounded-2xl p-3 sm:p-6 border border-gray-100 shadow-sm flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between border-b border-gray-50 pb-2 sm:pb-3 mb-2">
@@ -194,7 +186,6 @@ function Analytics() {
                       );
                     }}
                   >
-                    {/* Balanced gradient values across the crimson hue palette */}
                     <Cell fill="#7A0010" />
                     <Cell fill="#940014" />
                     <Cell fill="#B3001B" />
@@ -232,7 +223,6 @@ function Analytics() {
           </div>
         </div>
 
-        {/* Card 3: Year Joined (Bottom Full Row) */}
         <div className="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between border-b border-gray-50 pb-3 mb-4">
             <div>

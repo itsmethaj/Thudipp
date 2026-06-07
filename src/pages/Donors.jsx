@@ -86,7 +86,6 @@ function Donors() {
   return (
     <div className="min-h-screen pt-25 sm:pt-24 bg-[#F8F8F8] px-3 sm:px-6 pb-10 relative">
       <div className="w-full max-w-6xl mx-auto space-y-5">
-        {/* Main Title Header Container */}
         <div className="bg-white rounded-2xl sm:rounded-3xl text-center p-4 sm:p-6 border border-gray-100 shadow-sm">
           <h1 className="text-2xl sm:text-3xl font-black text-[#B3001B]">
             Find Donors
@@ -96,7 +95,6 @@ function Donors() {
           </p>
         </div>
 
-        {/* Filter Toolbar Card */}
         <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between mb-3 px-1">
             <span className="text-xs sm:text-sm font-bold text-gray-400 tracking-wider uppercase">
@@ -113,7 +111,6 @@ function Donors() {
             )}
           </div>
 
-          {/* Responsive 4-col to 8-col button matrix */}
           <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 sm:gap-2 mb-3">
             {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((group) => (
               <button
@@ -135,7 +132,6 @@ function Donors() {
           </div>
         </div>
 
-        {/* Responsive Cards Layout Container (1 col mobile, 2 col tablet, 3 col desktop) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredDonors.map((donor) => (
             <div
@@ -143,7 +139,6 @@ function Donors() {
               className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-sm hover:border-gray-200 transition-all flex flex-col justify-between"
             >
               <div>
-                {/* Card Header Structure */}
                 <div className="flex justify-between items-start gap-2 pb-3 border-b border-gray-50">
                   <div className="flex gap-2.5 items-center">
                     <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center shrink-0">
@@ -153,22 +148,17 @@ function Donors() {
                       <h2 className="text-sm sm:text-base font-black text-gray-900 line-clamp-1">
                         {donor.name}
                       </h2>
-                      {/* Admission Number Badge */}
                       <div className="inline-flex items-center gap-1 bg-gray-50 text-gray-500 border border-gray-100 px-2 py-0.5 rounded-full text-[10px] font-medium mt-0.5">
                         <BadgeInfo size={10} />
                         {donor.admission_no}
                       </div>
                     </div>
                   </div>
-
-                  {/* Blood Group & Availability Stack */}
                   <div className="flex flex-col items-end gap-1.5 shrink-0">
                     <div className="bg-[#B3001B] text-white px-2.5 py-1 rounded-lg font-black text-xs flex items-center gap-1 shadow-sm">
                       <HeartPulse size={12} />
                       {donor.blood_group}
                     </div>
-
-                    {/* Public Availability Tag Indicator */}
                     <div
                       className={`px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1 ${
                         donor.available
@@ -183,8 +173,6 @@ function Donors() {
                     </div>
                   </div>
                 </div>
-
-                {/* Card Info Fields */}
                 <div className="py-4 space-y-2 text-xs text-gray-600">
                   <div className="flex items-center gap-2">
                     <MapPin size={13} className="text-orange-500 shrink-0" />
@@ -198,9 +186,6 @@ function Donors() {
                   </p>
                 </div>
               </div>
-
-              {/* Action Trigger Button */}
-              {/* Contact Coordinator Button */}
               <button
                 onClick={() => handleContactClick(donor)}
                 className="
@@ -228,20 +213,15 @@ function Donors() {
             </div>
           ))}
         </div>
-
-        {/* Dynamic Empty State Layout Block */}
         {filteredDonors.length === 0 && (
           <div className="bg-white rounded-2xl p-8 text-center text-sm font-semibold text-gray-400 border border-gray-100 shadow-sm w-full">
             No registered blood donors found matching this filter criteria
           </div>
         )}
       </div>
-
-      {/* Modern, Responsive Volunteer Overlay Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-xl border border-gray-100 animate-slide-up flex flex-col max-h-[85vh]">
-            {/* Modal Header */}
             <div className="p-4 sm:p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
               <div>
                 <h3 className="font-black text-gray-900 text-base sm:text-lg">
@@ -261,8 +241,6 @@ function Donors() {
                 <X size={18} />
               </button>
             </div>
-
-            {/* Coordinator List */}
             <div className="p-4 overflow-y-auto space-y-3 flex-grow">
               {volunteers.length > 0 ? (
                 volunteers.map((vol) => (
@@ -342,7 +320,6 @@ function Donors() {
               )}
             </div>
 
-            {/* Modal Bottom Close bar */}
             <div className="p-3 bg-gray-50 border-t border-gray-50 text-center">
               <button
                 onClick={() => setIsModalOpen(false)}

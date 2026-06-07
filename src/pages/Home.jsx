@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabase"; // Adjusted to step down 1 level to find the root client
+import { supabase } from "../supabase"; 
 import {
   Heart,
   Droplets,
@@ -61,7 +61,6 @@ function Home() {
     },
   ];
 
-  // Fetch administrator uploaded banners from Supabase on mount
   useEffect(() => {
     const fetchBanners = async () => {
       try {
@@ -81,13 +80,12 @@ function Home() {
     fetchBanners();
   }, []);
 
-  // Slide Navigation Timers
   const startAutoSlide = () => {
     stopAutoSlide();
     if (banners.length > 1) {
       autoSlideRef.current = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % banners.length);
-      }, 5000); // Transitions slide every 5 seconds
+      }, 5000); 
     }
   };
 
@@ -115,14 +113,12 @@ function Home() {
   return (
     <div className="min-h-screen bg-[#F8F9FC] pt-24 sm:pt-28 pb-12 px-4 sm:px-8">
       <div className="w-full max-w-6xl mx-auto space-y-12">
-        {/* Figma-Level Manual & Auto Sliding Premium Hero Carousel */}
         {banners.length > 0 && (
           <div
             className="group relative overflow-hidden rounded-[24px] sm:rounded-[32px] shadow-md w-full aspect-video max-h-[400px] bg-white border border-gray-100"
             onMouseEnter={stopAutoSlide}
             onMouseLeave={startAutoSlide}
           >
-            {/* Active Sliding Background Layer Container */}
             {banners.map((url, index) => (
               <div
                 key={url}
@@ -140,7 +136,6 @@ function Home() {
               </div>
             ))}
 
-            {/* Manual Arrow Controls (Hidden on mobile, fades in on hover for desktop) */}
             {banners.length > 1 && (
               <>
                 <button
@@ -155,8 +150,6 @@ function Home() {
                 >
                   <ChevronRight size={20} />
                 </button>
-
-                {/* Slide Position Indicator Dots */}
                 <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
                   {banners.map((_, idx) => (
                     <button
@@ -175,10 +168,8 @@ function Home() {
           </div>
         )}
 
-        {/* High-Fidelity Conceptual "About Thudipp" Copy Area */}
         <div className="bg-white rounded-[28px] p-6 sm:p-8 border border-gray-100 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-            {/* Left Narrative Text Blocks Column */}
             <div className="lg:col-span-2 flex flex-col justify-between space-y-4">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-[#B3001B] text-[10px] sm:text-xs font-bold tracking-wider uppercase rounded-full mb-3">
@@ -218,8 +209,6 @@ function Home() {
                 </p>
               </div>
             </div>
-
-            {/* Right Architecture Simulation Indicators Column */}
             <div className="flex flex-col justify-center gap-3 bg-gray-50/50 rounded-2xl p-4 sm:p-5 border border-gray-100/60">
               <div className="bg-white rounded-xl p-3.5 border border-gray-100 flex items-center gap-3.5 shadow-sm">
                 <div className="p-2.5 bg-red-50 text-[#B3001B] rounded-xl shrink-0">
@@ -265,8 +254,6 @@ function Home() {
             </div>
           </div>
         </div>
-
-        {/* Blood Donation Facts Section */}
         <div className="space-y-4">
           <div className="px-1">
             <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
@@ -301,8 +288,6 @@ function Home() {
             })}
           </div>
         </div>
-
-        {/* FAQ Grid Section */}
         <div className="space-y-4">
           <div className="px-1">
             <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
@@ -333,7 +318,6 @@ function Home() {
           </div>
         </div>
 
-        {/* Footer */}
         <footer className="text-center pt-10 pb-4 border-t border-gray-200/50">
           <h3 className="font-black text-[#B3001B] text-lg tracking-wider flex items-center justify-center gap-1.5">
             THUDIPP <span className="animate-pulse text-sm">❤️</span>

@@ -5,13 +5,12 @@ import autoTable from "jspdf-autotable";
 import { SlidersHorizontal, Download } from "lucide-react";
 
 function ExportPDF() {
-  const [reportType, setReportType] = useState("donors"); // "donors" or "volunteers"
+  const [reportType, setReportType] = useState("donors"); 
   const [bloodGroup, setBloodGroup] = useState("");
   const [availability, setAvailability] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
   const [logoBase64, setLogoBase64] = useState("");
 
-  // Convert logo file to Base64 format on initial mount for jsPDF injection
   useEffect(() => {
     const convertLogoToBase64 = async () => {
       try {
@@ -34,7 +33,6 @@ function ExportPDF() {
     let error = null;
     let reportTitle = "";
 
-    // --- DATA FETCHING & TITLE LOGIC FOR DONORS ---
     if (reportType === "donors") {
       let query = supabase.from("donors").select("*").eq("archived", false);
 
@@ -42,7 +40,6 @@ function ExportPDF() {
         query = query.eq("blood_group", bloodGroup);
       }
 
-      // Fixed matching logic block to correctly process unavailable (false) flag strings
       if (availability !== "") {
         const isAvailableTarget = availability === "true";
         query = query.eq("available", isAvailableTarget);
@@ -61,7 +58,6 @@ function ExportPDF() {
         reportTitle = `THUDIPP ${availability === "true" ? "AVAILABLE" : "UNAVAILABLE"} DONORS REPORT`;
       }
     }
-    // --- DATA FETCHING & TITLE LOGIC FOR VOLUNTEERS ---
     else {
       let query = supabase.from("users").select("*");
 
@@ -89,11 +85,9 @@ function ExportPDF() {
       return;
     }
 
-    // Initialize landscape document structure
     const doc = new jsPDF({ orientation: "l", format: "a4" });
     const pageWidth = doc.internal.pageSize.getWidth();
 
-    // Center the Logo Emblem Graphic
     if (logoBase64) {
       const logoWidth = 14;
       const logoHeight = 14;
@@ -101,13 +95,11 @@ function ExportPDF() {
       doc.addImage(logoBase64, "PNG", logoX, 10, logoWidth, logoHeight);
     }
 
-    // Render Center-Aligned Core Header Titles
     doc.setFont("helvetica", "bold");
     doc.setFontSize(15);
-    doc.setTextColor(179, 0, 27); // #B3001B Brand Crimson
+    doc.setTextColor(179, 0, 27);
     doc.text(reportTitle, pageWidth / 2, 30, { align: "center" });
 
-    // Render Center-Aligned Subtext Metadata String
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
     doc.setTextColor(120, 120, 120);
@@ -119,7 +111,6 @@ function ExportPDF() {
       { align: "center" },
     );
 
-    // --- CONDITIONAL TABLE SCHEMA GENERATION ---
     if (reportType === "donors") {
       autoTable(doc, {
         startY: 42,
@@ -245,10 +236,8 @@ function ExportPDF() {
       });
     }
 
-    // Save File out using structural slug definitions
     doc.save(`thudipp-${reportTitle.toLowerCase().replace(/ /g, "-")}.pdf`);
 
-    // Complete background log telemetry insertions
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     await supabase.from("activity_logs").insert([
       {
@@ -263,7 +252,6 @@ function ExportPDF() {
 
   return (
     <div className="min-h-screen pt-25 bg-[#F6F7FB] px-3 sm:px-6 pb-10">
-      {/* Centered Page Header */}
       <div className="bg-white rounded-3xl max-w-xl mx-auto text-center p-5 border border-gray-100 shadow-sm mb-5">
         <h1 className="text-2xl sm:text-3xl font-black text-[#B3001B]">
           Export Registry Reports
@@ -272,10 +260,7 @@ function ExportPDF() {
           Generate high-fidelity tabular administrative documents
         </p>
       </div>
-
-      {/* Configuration Parameter Panel */}
       <div className="max-w-xl mx-auto bg-white rounded-3xl p-5 sm:p-6 border border-gray-100 shadow-sm space-y-5">
-        {/* Category Selector Buttons */}
         <div>
           <label className="block text-[11px] sm:text-xs font-black text-gray-400 uppercase tracking-wide mb-2 px-0.5">
             Select Report Category
@@ -314,7 +299,6 @@ function ExportPDF() {
         <div className="space-y-3">
           {reportType === "donors" ? (
             <>
-              {/* Blood Group Dropdown */}
               <div>
                 <label className="block text-[11px] sm:text-xs font-bold text-gray-400 uppercase tracking-wide mb-1.5 px-0.5">
                   Blood Group Pool
@@ -334,8 +318,6 @@ function ExportPDF() {
                   )}
                 </select>
               </div>
-
-              {/* Availability Dropdown */}
               <div>
                 <label className="block text-[11px] sm:text-xs font-bold text-gray-400 uppercase tracking-wide mb-1.5 px-0.5">
                   Availability Status
@@ -352,7 +334,6 @@ function ExportPDF() {
               </div>
             </>
           ) : (
-            /* Role Filtering Dropdown for Volunteers */
             <div>
               <label className="block text-[11px] sm:text-xs font-bold text-gray-400 uppercase tracking-wide mb-1.5 px-0.5">
                 Filter By Administrative Role
@@ -369,7 +350,6 @@ function ExportPDF() {
             </div>
           )}
 
-          {/* Action Execution Button */}
           <button
             onClick={exportPDF}
             className="w-full mt-2 bg-[#B3001B] text-white py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm hover:opacity-95 active:scale-[0.99] transition-all"

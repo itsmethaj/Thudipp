@@ -50,9 +50,7 @@ function Analytics() {
   return (
     <div className="w-full">
       <div className="mt-4">
-        {/* Forced 2 Columns and 1 Row on ALL devices (including mobile) */}
         <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-4">
-          {/* Availability Block */}
           <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-md flex flex-col justify-between">
             <div>
               <h3 className="font-bold text-xs sm:text-base lg:text-lg text-center mb-2 sm:mb-4 text-gray-800">
@@ -71,7 +69,6 @@ function Analytics() {
               </div>
 
               <div className="space-y-2 sm:space-y-4">
-                {/* Available Progress Bar */}
                 <div>
                   <div className="flex justify-between text-[10px] sm:text-xs mb-1">
                     <span className="text-green-600 font-semibold">
@@ -93,8 +90,6 @@ function Analytics() {
                     />
                   </div>
                 </div>
-
-                {/* Unavailable Progress Bar */}
                 <div>
                   <div className="flex justify-between text-[10px] sm:text-xs mb-1">
                     <span className="text-red-600 font-semibold">
@@ -125,14 +120,10 @@ function Analytics() {
               </span>
             </div>
           </div>
-
-          {/* Blood Group Block */}
           <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-md flex flex-col justify-between">
             <h3 className="font-bold text-xs sm:text-base lg:text-lg text-center mb-2 sm:mb-4 text-gray-800">
               Blood Groups
             </h3>
-
-            {/* Shorter height on mobile (h-36) so the donut chart remains perfectly circular and doesn't clip */}
             <div className="w-full h-36 sm:h-52 md:h-60 lg:h-64 relative mx-auto">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -174,7 +165,6 @@ function Analytics() {
                           x={x}
                           y={y}
                           fill="white"
-                          fontSize="10" // Keeps labels small inside the slices
                           fontWeight="bold"
                           textAnchor="middle"
                           dominantBaseline="middle"
@@ -182,8 +172,6 @@ function Analytics() {
                           
                         >
                          <tspan x={x} dy="-4">{name}</tspan>
-      
-      {/* 2. Force the Percentage Value onto the next line */}
       <tspan x={x} dy="10" fontSize="10" fontWeight="normal">
         {value}%
       </tspan>
@@ -202,8 +190,6 @@ function Analytics() {
                   </Pie>
 
                   <Tooltip />
-
-                  {/* Dynamic absolute centering for the inner text */}
                   <text
                     x="50%"
                     y="46%"
@@ -229,13 +215,10 @@ function Analytics() {
             </div>
           </div>
         </div>
-
-        {/* Bottom Row: Year Joined Line Chart */}
         <div className="bg-white rounded-2xl sm:rounded-3xl p-4 shadow-md">
           <h3 className="font-bold text-xs sm:text-base lg:text-lg text-center mb-3 text-gray-800">
             Year Joined
           </h3>
-
           <div className="w-full h-52 sm:h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
@@ -279,5 +262,4 @@ function Analytics() {
     </div>
   );
 }
-
 export default Analytics;

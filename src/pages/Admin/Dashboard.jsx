@@ -98,18 +98,14 @@ function Dashboard() {
   return (
     <div className="min-h-screen pt-25 bg-[#F6F7FB] p-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="bg-white rounded-3xl text-center p-6 shadow-sm mb-5 border border-gray-100/40">
           <h1 className="text-3xl font-black text-[#B3001B]">
             {user.role === "admin" ? "Admin Dashboard" : "Volunteer Dashboard"}
           </h1>
         </div>
-
-        {/* Action Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-5">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-5">
           {visibleActions.map((action) => {
             const Icon = action.icon;
-
             return (
               <button
                 key={action.title}
@@ -162,11 +158,7 @@ function Dashboard() {
             );
           })}
         </div>
-
-        {/* Analytics Section Component */}
         <Analytics />
-
-        {/* Logout */}
         <button
           onClick={() => {
             localStorage.removeItem("user");

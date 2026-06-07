@@ -10,7 +10,6 @@ import {
 
 function ActivityLogs() {
   const [logs, setLogs] = useState([]);
-
   useEffect(() => {
     fetchLogs();
   }, []);
@@ -42,33 +41,13 @@ function ActivityLogs() {
           {logs.map((log) => (
             <div
               key={log.id}
-              className="
-      bg-white
-      rounded-[28px]
-      border border-gray-100
-      shadow-[0_10px_40px_rgba(0,0,0,0.06)]
-      p-5
-    "
-            >
+              className="bg-white rounded-[28px] border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.06)] p-5">
               <div className="flex justify-center mb-2">
                 <div
-                  className="
-      inline-flex
-      items-center
-      bg-blue-100
-      text-blue-700
-      px-3
-      py-1.5
-      rounded-full
-      text-xs
-      font-semibold
-    "
-                >
+                  className="inline-flex items-center bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full text-xs font-semibold">
                   {log.action} • {log.target_admission_no}
                 </div>
               </div>
-
-              {/* Details */}
               <div className="grid gap-3 mt-5">
                 <div className="flex items-center gap-3">
                   <UserRound size={16} />

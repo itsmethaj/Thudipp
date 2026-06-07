@@ -34,7 +34,6 @@ function Login() {
   return (
     <div className="min-h-screen bg-[#F8F8F8] flex items-center justify-center p-4">
       <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm p-6 sm:p-8 w-full max-w-md flex flex-col items-center">
-        {/* Central Logo Graphic Branding */}
         <div className="mb-4 transform hover:scale-105 transition-transform duration-300">
           <img
             src="/logo.png"
@@ -43,7 +42,6 @@ function Login() {
           />
         </div>
 
-        {/* Branding Titles */}
         <div className="text-center mb-6">
           <h1 className="text-2xl sm:text-3xl font-black text-[#B3001B] tracking-tight">
             Thudipp
@@ -53,9 +51,7 @@ function Login() {
           </p>
         </div>
 
-        {/* Input Interactive Form Area */}
         <form onSubmit={handleLogin} className="w-full space-y-4">
-          {/* Username Input with Embedded Icon */}
           <div className="relative">
             <User className="absolute left-3 top-3.5 text-gray-400 w-4 h-4" />
             <input
@@ -68,7 +64,6 @@ function Login() {
             />
           </div>
 
-          {/* Password Input with Embedded Icon */}
           <div className="relative">
             <Lock className="absolute left-3 top-3.5 text-gray-400 w-4 h-4" />
             <input
@@ -81,7 +76,6 @@ function Login() {
             />
           </div>
 
-          {/* Premium Form Submit Button */}
           <button
             type="submit"
             className="w-full mt-2 bg-[#B3001B] text-white py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm hover:opacity-95 active:scale-[0.99] transition-all"

@@ -111,7 +111,6 @@ function ViewDonors() {
             />
           </div>
 
-          {/* Blood Group Toggles: Adapts grid layouts depending on resolution screen estate */}
           <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 sm:gap-2 mb-4">
             {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((group) => (
               <button

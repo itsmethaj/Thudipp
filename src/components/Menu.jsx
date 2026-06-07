@@ -47,7 +47,6 @@ function Menu() {
 
   return (
     <div className="absolute left-3 top-1/2 -translate-y-1/2">
-      {/* Animated Hamburger Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="relative z-30 w-11 h-11 rounded-xl bg-[#B3001B] border border-white/10 shadow-md flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95"
@@ -64,16 +63,12 @@ function Menu() {
           />
         </div>
       </button>
-
-      {/* Backdrop Overlay */}
       <div
         onClick={() => setIsOpen(false)}
         className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-10 transition-all duration-300 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       />
-
-      {/* Drawer Container Panel */}
       <div
         className={`fixed -top-5 -left-3 w-[80vw] max-w-[300px] h-screen z-20 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isOpen
@@ -82,9 +77,7 @@ function Menu() {
         }`}
       >
         <div className="h-full bg-gradient-to-b from-[#940014] via-[#B3001B] to-[#6A040F] rounded-r-[32px] border-r border-white/10 shadow-[5px_0_40px_rgba(0,0,0,0.25)] p-5 pt-24 flex flex-col justify-between">
-          {/* Menu Top Section */}
           <div className="space-y-6">
-            {/* Header Identity */}
             <div className="pb-5 border-b border-white/10">
               <h2 className="text-white text-2xl font-black tracking-tight flex items-center gap-2">
                 Thudipp{" "}
@@ -93,8 +86,6 @@ function Menu() {
               <p className="text-white/50 text-xs mt-0.5 font-medium">
                 Connecting Donors • Saving Lives
               </p>
-
-              {/* Logged User Info Plate */}
               {user && (
                 <div className="mt-4 bg-black/10 border border-white/5 rounded-2xl p-3 flex items-center gap-3">
                   <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
@@ -111,8 +102,6 @@ function Menu() {
                 </div>
               )}
             </div>
-
-            {/* Nav Links Stack */}
             <nav className="flex flex-col gap-1.5">
               {menuItems.map((item) => {
                 const IconComponent = item.icon;
@@ -143,8 +132,6 @@ function Menu() {
               })}
             </nav>
           </div>
-
-          {/* Action Footer Callout */}
           <div className="pt-4 border-t border-white/10 pb-8">
             <button
               onClick={() => {
