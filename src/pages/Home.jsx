@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabase"; 
+import { supabase } from "../supabase"; // Steps down 1 level to find the root client config
 import {
   Heart,
   Droplets,
@@ -11,6 +11,7 @@ import {
   Search,
   Shield,
   Layers,
+  ArrowRight,
 } from "lucide-react";
 
 function Home() {
@@ -61,6 +62,7 @@ function Home() {
     },
   ];
 
+  // Fetch administrator uploaded banners from Supabase on mount
   useEffect(() => {
     const fetchBanners = async () => {
       try {
@@ -80,12 +82,13 @@ function Home() {
     fetchBanners();
   }, []);
 
+  // Slide Navigation Timers
   const startAutoSlide = () => {
     stopAutoSlide();
     if (banners.length > 1) {
       autoSlideRef.current = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % banners.length);
-      }, 5000); 
+      }, 5000); // Rotates slides automatically every 5 seconds
     }
   };
 
@@ -112,13 +115,15 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-[#F8F9FC] pt-24 sm:pt-28 pb-12 px-4 sm:px-8">
-      <div className="w-full max-w-6xl mx-auto space-y-12">
+      <div className="w-full max-w-6xl mx-auto space-y-8">
+        {/* Figma-Level Manual & Auto Sliding Premium Hero Carousel */}
         {banners.length > 0 && (
           <div
-            className="group relative overflow-hidden rounded-[24px] sm:rounded-[32px] shadow-md w-full aspect-video max-h-[400px] bg-white border border-gray-100"
+            className="group relative overflow-hidden rounded-[16px] sm:rounded-[32px] shadow-sm w-full aspect-[3/1] sm:aspect-[3/1] bg-white border border-gray-100/80"
             onMouseEnter={stopAutoSlide}
             onMouseLeave={startAutoSlide}
           >
+            {/* Active Sliding Background Layer Container */}
             {banners.map((url, index) => (
               <div
                 key={url}
@@ -131,34 +136,37 @@ function Home() {
                 <img
                   src={url}
                   alt={`Hero Banner Track ${index + 1}`}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-fill"
                 />
               </div>
             ))}
 
+            {/* Manual Arrow Controls (Hidden on mobile, fades in on hover for desktop) */}
             {banners.length > 1 && (
               <>
                 <button
                   onClick={handlePrevSlide}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/10 hover:bg-black/30 text-gray-700 hover:text-black backdrop-blur-xs flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hidden sm:flex"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/10 hover:bg-black/25 text-gray-700 hover:text-black backdrop-blur-xs flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hidden sm:flex"
                 >
                   <ChevronLeft size={20} />
                 </button>
                 <button
                   onClick={handleNextSlide}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/10 hover:bg-black/30 text-gray-700 hover:text-black backdrop-blur-xs flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hidden sm:flex"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/10 hover:bg-black/25 text-gray-700 hover:text-black backdrop-blur-xs flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 hidden sm:flex"
                 >
                   <ChevronRight size={20} />
                 </button>
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+
+                {/* Slide Position Indicator Dots */}
+                <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
                   {banners.map((_, idx) => (
                     <button
                       key={idx}
                       onClick={() => setCurrentSlide(idx)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                      className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${
                         idx === currentSlide
-                          ? "w-6 bg-[#B3001B]"
-                          : "w-1.5 bg-gray-300 hover:bg-gray-400"
+                          ? "w-4 sm:w-6 bg-[#B3001B]"
+                          : "w-1 sm:w-1.5 bg-gray-300 hover:bg-gray-400"
                       }`}
                     />
                   ))}
@@ -168,8 +176,43 @@ function Home() {
           </div>
         )}
 
+        {/* Primary Action Button Bar for Normal Visitors */}
+        <div className="bg-gradient-to-r from-red-50 to-red-100/50 border border-red-100 rounded-[24px] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm shadow-red-900/5">
+          <div className="flex items-center gap-4 text-center md:text-left flex-col md:flex-row">
+            <div className="p-4 bg-white text-[#B3001B] rounded-2xl shadow-sm relative shrink-0">
+              <Droplets size={28} className="animate-pulse" />
+              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+              </span>
+            </div>
+            <div>
+              <h3 className="text-xl font-black text-gray-900 tracking-tight">
+                Looking for a Blood Donor?
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
+                Search our real-time community registry by blood group to
+                connect with coordinators.
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => navigate("/donors")}
+            className="group w-full md:w-auto inline-flex items-center justify-center gap-2.5 bg-[#B3001B] hover:bg-[#8C0015] text-white px-8 py-4 rounded-2xl font-bold tracking-wide shadow-lg shadow-red-900/10 hover:shadow-red-900/20 active:scale-[0.98] transition-all duration-150 shrink-0 whitespace-nowrap"
+          >
+            <span>Find Blood Donors</span>
+            <ArrowRight
+              size={18}
+              className="group-hover:translate-x-1 transition-transform duration-200"
+            />
+          </button>
+        </div>
+
+        {/* High-Fidelity Conceptual "About Thudipp" Copy Area */}
         <div className="bg-white rounded-[28px] p-6 sm:p-8 border border-gray-100 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            {/* Left Narrative Text Blocks Column */}
             <div className="lg:col-span-2 flex flex-col justify-between space-y-4">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-[#B3001B] text-[10px] sm:text-xs font-bold tracking-wider uppercase rounded-full mb-3">
@@ -209,6 +252,8 @@ function Home() {
                 </p>
               </div>
             </div>
+
+            {/* Right Architecture Simulation Indicators Column */}
             <div className="flex flex-col justify-center gap-3 bg-gray-50/50 rounded-2xl p-4 sm:p-5 border border-gray-100/60">
               <div className="bg-white rounded-xl p-3.5 border border-gray-100 flex items-center gap-3.5 shadow-sm">
                 <div className="p-2.5 bg-red-50 text-[#B3001B] rounded-xl shrink-0">
@@ -225,7 +270,7 @@ function Home() {
               </div>
 
               <div className="bg-white rounded-xl p-3.5 border border-gray-100 flex items-center gap-3.5 shadow-sm">
-                <div className="p-2.5 bg-red-50 text-[#B3001B] rounded-xl shrink-0">
+                <div className="p-2.5 bg-red-50 text-[#B3001B] text-[18px] rounded-xl shrink-0">
                   <Shield size={18} />
                 </div>
                 <div>
@@ -254,6 +299,8 @@ function Home() {
             </div>
           </div>
         </div>
+
+        {/* Blood Donation Facts Section */}
         <div className="space-y-4">
           <div className="px-1">
             <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
@@ -288,6 +335,8 @@ function Home() {
             })}
           </div>
         </div>
+
+        {/* FAQ Grid Section */}
         <div className="space-y-4">
           <div className="px-1">
             <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
@@ -318,6 +367,7 @@ function Home() {
           </div>
         </div>
 
+        {/* Footer */}
         <footer className="text-center pt-10 pb-4 border-t border-gray-200/50">
           <h3 className="font-black text-[#B3001B] text-lg tracking-wider flex items-center justify-center gap-1.5">
             THUDIPP <span className="animate-pulse text-sm">❤️</span>
