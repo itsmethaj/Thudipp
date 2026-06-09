@@ -125,23 +125,25 @@ Tracks important actions such as:
 
 <p align="center">
   <b>Home Portal Interface</b><br>
-  <img src="./public/home.png" alt="Thudipp Home Page" width="85%" style="border-radius: 8px; margin-bottom: 20px;">
+  <img src="./public/home.png" alt="Thudipp Home Page" width="45%" style="border-radius: 8px; margin-bottom: 25px;">
 </p>
 
 <p align="center">
   <b>Dynamic Donor Discovery Search</b><br>
-  <img src="./public/Find Donor.png" alt="Thudipp Donor Search" width="85%" style="border-radius: 8px; margin-bottom: 20px;">
+  <img src="./public/Find%20Donor.png" alt="Thudipp Donor Search" width="45%" style="border-radius: 8px; margin-bottom: 25px;">
 </p>
 
 <p align="center">
   <b>Central Administration Hub</b><br>
-  <img src="./public/Admin Dashboard.png" alt="Thudipp Admin Dashboard" width="85%" style="border-radius: 8px; margin-bottom: 20px;">
-  <img src="./public/Admin Dashboard_2.png" alt="Thudipp Admin Dashboard" width="85%" style="border-radius: 8px; margin-bottom: 20px;">
+  <img src="./public/Admin%20Dashboard.png" alt="Thudipp Admin Dashboard View 1" width="45%" style="border-radius: 8px; margin: 5px;">
+  <img src="./public/Admin%20Dashboard_2.png" alt="Thudipp Admin Dashboard View 2" width="45%" style="border-radius: 8px; margin: 5px;">
 </p>
+
+<br>
 
 <p align="center">
   <b>Volunteer Coordination Workspace</b><br>
-  <img src="./public/Volunteer Dashboard.png" alt="Thudipp Volunteer Dashboard" width="85%" style="border-radius: 8px;">
+  <img src="./public/Volunteer%20Dashboard.png" alt="Thudipp Volunteer Dashboard" width="45%" style="border-radius: 8px;">
 </p>
 
 ---
