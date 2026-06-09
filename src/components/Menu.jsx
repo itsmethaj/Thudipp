@@ -83,7 +83,7 @@ function Menu() {
                 Thudipp
               </h2>
               <p className="text-white/50 text-xs mt-0.5 font-medium">
-                Connecting Donors • Saving Lives
+                The Thudipp That Connects Lives
               </p>
               {user && (
                 <div className="mt-4 bg-black/10 border border-white/5 rounded-2xl p-3 flex items-center gap-3">

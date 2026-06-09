@@ -45,7 +45,7 @@ function SplashScreen({ finishLoading }) {
             Thudipp
           </h1>
           <p className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mt-1">
-            Connecting Donors • Saving Lives
+            The Thudipp That Connects Lives
           </p>
         </div>
       </div>

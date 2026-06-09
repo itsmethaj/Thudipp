@@ -15,7 +15,6 @@ The project focuses on donor management, privacy-conscious communication, role-b
 ### Public Features
 
 * Search donors by blood group
-* Filter donors by course and year
 * View donor availability status
 * Privacy-focused donor information display
 * Contact authorized coordinators instead of exposing donor details
@@ -29,7 +28,7 @@ The project focuses on donor management, privacy-conscious communication, role-b
 * Create volunteer accounts
 * Assign volunteer permissions
 * Monitor activity logs
-* Export donor data as PDF
+* Export donor & volunteer data as PDF
 
 ### Volunteer Features
 
@@ -124,58 +123,29 @@ Tracks important actions such as:
 
 ## 📷 Screenshots
 
-### Home Page
+<p align="center">
+  <b>Home Portal Interface</b><br>
+  <img src="./public/home.png" alt="Thudipp Home Page" width="85%" style="border-radius: 8px; margin-bottom: 20px;">
+</p>
 
-*Add screenshot here*
+<p align="center">
+  <b>Dynamic Donor Discovery Search</b><br>
+  <img src="./public/Find Donor.png" alt="Thudipp Donor Search" width="85%" style="border-radius: 8px; margin-bottom: 20px;">
+</p>
 
-### Donor Search
+<p align="center">
+  <b>Central Administration Hub</b><br>
+  <img src="./public/Admin Dashboard.png" alt="Thudipp Admin Dashboard" width="85%" style="border-radius: 8px; margin-bottom: 20px;">
+  <img src="./public/Admin Dashboard_2.png" alt="Thudipp Admin Dashboard" width="85%" style="border-radius: 8px; margin-bottom: 20px;">
+</p>
 
-*Add screenshot here*
-
-### Admin Dashboard
-
-*Add screenshot here*
-
-### Volunteer Dashboard
-
-*Add screenshot here*
-
----
-
-## ⚙️ Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/itsmethaj/Thudipp.git
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start development server:
-
-```bash
-npm run dev
-```
-
-Build for production:
-
-```bash
-npm run build
-```
-
----
-
-## 👨‍💻 Developer
-
-Developed as a learning and demonstration project to explore modern web development, donor management systems, and privacy-focused application design.
+<p align="center">
+  <b>Volunteer Coordination Workspace</b><br>
+  <img src="./public/Volunteer Dashboard.png" alt="Thudipp Volunteer Dashboard" width="85%" style="border-radius: 8px;">
+</p>
 
 ---
 
 ## ❤️ Thudipp
 
-**Donate Blood. Save Lives.**
+**The Thudipp That Connects Lives.**
