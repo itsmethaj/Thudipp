@@ -90,14 +90,11 @@ function Donors() {
           <h1 className="text-2xl sm:text-3xl font-black text-[#B3001B]">
             Find Donors
           </h1>
-          <p className="text-xs text-gray-400 mt-0.5">
-            Search verified blood donors near you
-          </p>
         </div>
 
         <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between mb-3 px-1">
-            <span className="text-xs sm:text-sm font-bold text-gray-400 tracking-wider uppercase">
+            <span className="text-xs sm:text-sm font-bold mx-auto text-gray-400 tracking-wider uppercase">
               Filter by Blood Group
             </span>
             {bloodGroup && (
@@ -127,8 +124,9 @@ function Donors() {
             ))}
           </div>
 
-          <div className="text-[11px] sm:text-xs text-gray-400 font-medium px-1 mt-1">
-            Showing {filteredDonors.length} active matching pool profiles
+          <div className="text-[11px] sm:text-xs text-center rounded-sm bg-gray-50 text-gray-400 font-medium shadow-sm px-1 mt-1">
+             Showing {filteredDonors.length} active matching pool
+            profiles
           </div>
         </div>
 
