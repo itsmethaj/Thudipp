@@ -93,9 +93,6 @@ function ViewDonors() {
         <h1 className="text-2xl sm:text-3xl font-black text-[#B3001B]">
           View Donors
         </h1>
-        <p className="text-xs text-gray-400 mt-0.5">
-          Manage and filter registered database profiles
-        </p>
       </div>
 
       <div className="max-w-6xl mx-auto space-y-5">

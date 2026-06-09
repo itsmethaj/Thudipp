@@ -88,8 +88,11 @@ return (
   <div className="min-h-screen pt-25 bg-[#F8F8F8] p-4">
     {" "}
     <div className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-black text-[#B3001B] mb-6">Volunteers</h1>
-
+      <div className="bg-white rounded-3xl max-w-6xl text-center p-6 mx-auto  shadow-sm mb-5">
+        <h1 className="text-3xl font-black text-[#B3001B] ">
+          Volunteers
+        </h1>
+      </div>
       <div className="space-y-4">
         {volunteers.map((volunteer) => (
           <div

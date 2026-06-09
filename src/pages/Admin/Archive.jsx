@@ -71,16 +71,11 @@ function Archive() {
   return (
     <div className="min-h-screen pt-25 bg-[#F8F8F8] p-4">
       <div className="max-w-6xl mx-auto">
-        <button
-          onClick={() => navigate("/admin/view-donors")}
-          className="mb-4 bg-gray-200 px-4 py-2 rounded-xl"
-        >
-          ← Back
-        </button>
-
-        <h1 className="text-3xl font-black text-[#B3001B] mb-6">
-          Archived Donors
-        </h1>
+        <div className="bg-white rounded-3xl text-center p-6 mx-auto max-w-6xl shadow-sm mb-5">
+          <h1 className="text-3xl font-black text-[#B3001B] ">
+            Archived Donors
+          </h1>
+        </div>
 
         <div className="space-y-4">
           {donors.map((donor) => (

@@ -132,12 +132,13 @@ function CreateVolunteer() {
   }
 
   return (
-    <div className="min-h-screen pt-25 bg-[#F8F8F8] p-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-3xl p-6 shadow-md">
-        <h1 className="text-3xl font-black text-[#B3001B] mb-6">
+    <div className="min-h-screen pt-25  bg-[#F8F8F8] p-4">
+      <div className="bg-white rounded-3xl max-w-6xl text-center p-6 mx-auto  shadow-sm mb-5">
+        <h1 className="text-3xl font-black text-[#B3001B] ">
           Create Volunteer
         </h1>
-
+      </div>
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl p-6 shadow-md">
         <div className="flex gap-2 mb-6">
           <input
             type="text"

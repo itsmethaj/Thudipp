@@ -21,29 +21,14 @@ function AccessControlDashboard() {
 
   return (
     <div className="min-h-screen pt-25 bg-[#F8F8F8] p-4">
-      <div className="max-w-md mx-auto">
+      <div className="mx-auto max-w-6xl">
         {/* Header */}
 
         <div className="mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <div
-              className="
-                w-12 h-12
-                rounded-2xl
-                bg-red-50
-                flex items-center justify-center
-              "
-            >
-              <ShieldCheck size={24} className="text-[#B3001B]" />
-            </div>
-
-            <div>
-              <h1 className="text-2xl font-black text-gray-900">
-                Access Control
-              </h1>
-
-              <p className="text-sm text-gray-500">Manage volunteer access</p>
-            </div>
+          <div className="bg-white rounded-3xl text-center p-6 mx-auto  shadow-sm mb-5">
+            <h1 className="text-3xl font-black text-[#B3001B] ">
+              Access Control
+            </h1>
           </div>
         </div>
 

@@ -12,12 +12,15 @@ import {
   Shield,
   Layers,
   ArrowRight,
+  X,
+  AlertTriangle,
 } from "lucide-react";
 
 function Home() {
   const navigate = useNavigate();
   const [banners, setBanners] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showNotice, setShowNotice] = useState(false);
   const autoSlideRef = useRef(null);
 
   const facts = [
@@ -61,6 +64,18 @@ function Home() {
       a: "To protect donor privacy and prevent misuse of personal information.",
     },
   ];
+
+  // Check one-time notice criteria on initial mount
+  useEffect(() => {
+    const hasSeenNotice = localStorage.getItem("thudipp_notice_seen");
+    if (!hasSeenNotice) {
+      // Small timeout gives a premium delayed appearance effect after initial asset load
+      const timer = setTimeout(() => {
+        setShowNotice(true);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   // Fetch administrator uploaded banners from Supabase on mount
   useEffect(() => {
@@ -113,13 +128,19 @@ function Home() {
     setCurrentSlide((prev) => (prev + 1) % banners.length);
   };
 
+  // Close notice action handling function
+  const handleCloseNotice = () => {
+    localStorage.setItem("thudipp_notice_seen", "true");
+    setShowNotice(false);
+  };
+
   return (
-    <div className="min-h-screen bg-[#F8F9FC] pt-24 sm:pt-28 pb-12 px-4 sm:px-8">
+    <div className="min-h-screen bg-[#F8F9FC] pt-24 sm:pt-28 pb-12 px-4 sm:px-8 relative">
       <div className="w-full max-w-6xl mx-auto space-y-8">
         {/* Figma-Level Manual & Auto Sliding Premium Hero Carousel */}
         {banners.length > 0 && (
           <div
-            className="group relative overflow-hidden rounded-[16px] sm:rounded-[32px] shadow-sm w-full aspect-[3/1] sm:aspect-[3/1] bg-white border border-gray-100/80"
+            className="group relative overflow-hidden rounded-[16px] sm:rounded-[32px] shadow-sm w-full aspect-[3/1] bg-white border border-gray-100/80"
             onMouseEnter={stopAutoSlide}
             onMouseLeave={startAutoSlide}
           >
@@ -141,7 +162,7 @@ function Home() {
               </div>
             ))}
 
-            {/* Manual Arrow Controls (Hidden on mobile, fades in on hover for desktop) */}
+            {/* Manual Arrow Controls */}
             {banners.length > 1 && (
               <>
                 <button
@@ -212,7 +233,6 @@ function Home() {
         {/* High-Fidelity Conceptual "About Thudipp" Copy Area */}
         <div className="bg-white rounded-[28px] p-6 sm:p-8 border border-gray-100 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-            {/* Left Narrative Text Blocks Column */}
             <div className="lg:col-span-2 flex flex-col justify-between space-y-4">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-[#B3001B] text-[10px] sm:text-xs font-bold tracking-wider uppercase rounded-full mb-3">
@@ -253,7 +273,6 @@ function Home() {
               </div>
             </div>
 
-            {/* Right Architecture Simulation Indicators Column */}
             <div className="flex flex-col justify-center gap-3 bg-gray-50/50 rounded-2xl p-4 sm:p-5 border border-gray-100/60">
               <div className="bg-white rounded-xl p-3.5 border border-gray-100 flex items-center gap-3.5 shadow-sm">
                 <div className="p-2.5 bg-red-50 text-[#B3001B] rounded-xl shrink-0">
@@ -270,7 +289,7 @@ function Home() {
               </div>
 
               <div className="bg-white rounded-xl p-3.5 border border-gray-100 flex items-center gap-3.5 shadow-sm">
-                <div className="p-2.5 bg-red-50 text-[#B3001B] text-[18px] rounded-xl shrink-0">
+                <div className="p-2.5 bg-red-50 text-[#B3001B] rounded-xl shrink-0">
                   <Shield size={18} />
                 </div>
                 <div>
@@ -377,6 +396,76 @@ function Home() {
           </p>
         </footer>
       </div>
+
+      {/* ⚠️ Premium One-Time Announcement Startup Modal */}
+      {showNotice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md transition-all duration-300 animate-fadeIn">
+          <div className="bg-white rounded-[28px] max-w-lg w-full p-6 sm:p-8 border border-gray-100 shadow-2xl relative space-y-5 animate-scaleUp">
+            {/* Top Close Icon Button */}
+            <button
+              onClick={handleCloseNotice}
+              className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 transition-colors p-1 bg-gray-50 hover:bg-gray-100 rounded-full"
+            >
+              <X size={18} />
+            </button>
+
+            {/* Title Block Header */}
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-amber-50 text-amber-600 rounded-xl">
+                <AlertTriangle size={22} />
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight">
+                  Demo Project Notice
+                </h2>
+                <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">
+                  Transparency Framework
+                </p>
+              </div>
+            </div>
+
+            {/* Informational Summary Main Text Track Block */}
+            <div className="text-gray-500 text-xs sm:text-sm leading-relaxed font-medium space-y-3.5">
+              <p>
+                Welcome to{" "}
+                <strong className="text-gray-900 font-bold">Thudipp</strong>.
+                This website is currently a prototype project created to
+                demonstrate how a blood donor management platform could work.
+              </p>
+              <p>
+                The donor records, phone numbers, and related information
+                displayed on this website are intended for testing and
+                demonstration purposes only and should not be considered
+                verified or real-world donor data.
+              </p>
+              <p>
+                The project focuses on exploring donor management,
+                privacy-conscious communication, and emergency donor search
+                workflows.
+              </p>
+
+              {/* Refined Safety Demo Trace Sub-Notice */}
+              <div className="bg-gray-50 border border-gray-100 rounded-xl p-3.5 mt-2">
+                <p className="text-[11px] sm:text-xs text-gray-600 font-semibold flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#B3001B]" />
+                  Need access to the admin panel?
+                </p>
+                <p className="text-[11px] text-gray-400 font-medium mt-1 pl-3">
+                  Please contact the developer for a custom demo account setup.
+                </p>
+              </div>
+            </div>
+
+            {/* Acknowledgment Action Button Layer */}
+            <button
+              onClick={handleCloseNotice}
+              className="w-full bg-gray-900 hover:bg-black text-white py-3.5 rounded-xl font-bold tracking-wide text-xs sm:text-sm shadow-md transition-all duration-150 active:scale-[0.99]"
+            >
+              Understand & Continue
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

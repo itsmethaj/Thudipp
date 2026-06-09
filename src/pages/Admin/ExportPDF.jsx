@@ -252,15 +252,12 @@ function ExportPDF() {
 
   return (
     <div className="min-h-screen pt-25 bg-[#F6F7FB] px-3 sm:px-6 pb-10">
-      <div className="bg-white rounded-3xl max-w-xl mx-auto text-center p-5 border border-gray-100 shadow-sm mb-5">
-        <h1 className="text-2xl sm:text-3xl font-black text-[#B3001B]">
+      <div className="bg-white rounded-3xl text-center p-6 mx-auto max-w-6xl shadow-sm mb-5">
+        <h1 className="text-3xl font-black text-[#B3001B] ">
           Export Registry Reports
         </h1>
-        <p className="text-xs text-gray-400 mt-0.5">
-          Generate high-fidelity tabular administrative documents
-        </p>
       </div>
-      <div className="max-w-xl mx-auto bg-white rounded-3xl p-5 sm:p-6 border border-gray-100 shadow-sm space-y-5">
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl p-5 sm:p-6 border border-gray-100 shadow-sm space-y-5">
         <div>
           <label className="block text-[11px] sm:text-xs font-black text-gray-400 uppercase tracking-wide mb-2 px-0.5">
             Select Report Category

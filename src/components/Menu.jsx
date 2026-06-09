@@ -80,8 +80,7 @@ function Menu() {
           <div className="space-y-6">
             <div className="pb-5 border-b border-white/10">
               <h2 className="text-white text-2xl font-black tracking-tight flex items-center gap-2">
-                Thudipp{" "}
-                <span className="text-red-300 text-sm animate-pulse">❤️</span>
+                Thudipp
               </h2>
               <p className="text-white/50 text-xs mt-0.5 font-medium">
                 Connecting Donors • Saving Lives
@@ -132,13 +131,13 @@ function Menu() {
               })}
             </nav>
           </div>
-          <div className="pt-4 border-t border-white/10 pb-8">
+          <div className="pt-4 pb-20 border-t border-white/10 pb-8">
             <button
               onClick={() => {
                 navigate("/donors");
                 setIsOpen(false);
               }}
-              className="w-full bg-white hover:bg-red-50 active:scale-[0.98] text-[#B3001B] font-black py-3 rounded-xl shadow-md flex items-center justify-center gap-2 text-xs sm:text-sm tracking-wide transition-all duration-200"
+              className="w-full  bg-white hover:bg-red-50 active:scale-[0.98] text-[#B3001B] font-black py-3 rounded-xl shadow-md flex items-center justify-center gap-2 text-xs sm:text-sm tracking-wide transition-all duration-200"
             >
               <HeartPulse size={16} />
               FIND DONORS

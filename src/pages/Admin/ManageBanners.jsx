@@ -91,10 +91,11 @@ export default function ManageBanners() {
 
   return (
     <div className="min-h-screen pt-28 px-4 bg-gray-100">
-      <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-red-700">Manage Banners</h1>
-
+      <div className="bg-white rounded-3xl text-center p-6 mx-auto max-w-6xl shadow-sm mb-5">
+        <h1 className="text-3xl font-black text-[#B3001B] ">Manage Banners</h1>
+      </div>
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow p-6">
+        <div className="flex justify-center items-center mb-6">
           <label className="cursor-pointer">
             <span className="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-semibold">
               {uploading ? "Uploading..." : "Upload Banner"}

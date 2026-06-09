@@ -32,9 +32,6 @@ function ActivityLogs() {
           <h1 className="text-3xl font-black text-[#B3001B] text-center">
             Activity Logs
           </h1>
-          <p className="pt-5 text-gray-500 text-sm text-center">
-            Track all admin and volunteer actions
-          </p>
         </div>
 
         <div className="space-y-4">
