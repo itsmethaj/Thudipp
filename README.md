@@ -106,3 +106,6 @@ The donor records used in the system are sample records created for testing and 
 
 ---
 
+## Demo Access
+
+Interested in testing the Admin or Volunteer dashboard? Contact me for demo access.
