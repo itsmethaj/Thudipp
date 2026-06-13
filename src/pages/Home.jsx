@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabase"; // Steps down 1 level to find the root client config
+import { supabase } from "../supabase"; 
 import {
   Heart,
   Droplets,
@@ -65,11 +65,9 @@ function Home() {
     },
   ];
 
-  // Check one-time notice criteria on initial mount
   useEffect(() => {
     const hasSeenNotice = localStorage.getItem("thudipp_notice_seen");
     if (!hasSeenNotice) {
-      // Small timeout gives a premium delayed appearance effect after initial asset load
       const timer = setTimeout(() => {
         setShowNotice(true);
       }, 800);
@@ -77,7 +75,6 @@ function Home() {
     }
   }, []);
 
-  // Fetch administrator uploaded banners from Supabase on mount
   useEffect(() => {
     const fetchBanners = async () => {
       try {
@@ -97,13 +94,12 @@ function Home() {
     fetchBanners();
   }, []);
 
-  // Slide Navigation Timers
   const startAutoSlide = () => {
     stopAutoSlide();
     if (banners.length > 1) {
       autoSlideRef.current = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % banners.length);
-      }, 5000); // Rotates slides automatically every 5 seconds
+      }, 5000); 
     }
   };
 
@@ -128,7 +124,6 @@ function Home() {
     setCurrentSlide((prev) => (prev + 1) % banners.length);
   };
 
-  // Close notice action handling function
   const handleCloseNotice = () => {
     localStorage.setItem("thudipp_notice_seen", "true");
     setShowNotice(false);
@@ -137,14 +132,12 @@ function Home() {
   return (
     <div className="min-h-screen bg-[#F8F9FC] pt-24 sm:pt-28 pb-12 px-4 sm:px-8 relative">
       <div className="w-full max-w-6xl mx-auto space-y-8">
-        {/* Figma-Level Manual & Auto Sliding Premium Hero Carousel */}
         {banners.length > 0 && (
           <div
             className="group relative overflow-hidden rounded-[16px] sm:rounded-[32px] shadow-sm w-full aspect-[3/1] bg-white border border-gray-100/80"
             onMouseEnter={stopAutoSlide}
             onMouseLeave={startAutoSlide}
           >
-            {/* Active Sliding Background Layer Container */}
             {banners.map((url, index) => (
               <div
                 key={url}
@@ -161,8 +154,6 @@ function Home() {
                 />
               </div>
             ))}
-
-            {/* Manual Arrow Controls */}
             {banners.length > 1 && (
               <>
                 <button
@@ -177,8 +168,6 @@ function Home() {
                 >
                   <ChevronRight size={20} />
                 </button>
-
-                {/* Slide Position Indicator Dots */}
                 <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
                   {banners.map((_, idx) => (
                     <button
@@ -197,15 +186,14 @@ function Home() {
           </div>
         )}
 
-        {/* Primary Action Button Bar for Normal Visitors */}
         <div className="bg-gradient-to-r from-red-50 to-red-100/50 border border-red-100 rounded-[24px] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm shadow-red-900/5">
           <div className="flex items-center gap-4 text-center md:text-left flex-col md:flex-row">
-            <div className="p-4 bg-white text-[#B3001B] rounded-2xl shadow-sm relative shrink-0">
-              <Droplets size={28} className="animate-pulse" />
-              <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-              </span>
+            <div className="w-22 h-22 p-2 bg-white text-[#B3001B] rounded-2xl shadow-sm relative shrink-0 flex items-center justify-center">
+              <img
+                src="/logo .png"
+                className="w-full h-full animate-pulse opacity-[.9yyyy] object-contain"
+                alt="Thudipp Logo"
+              />
             </div>
             <div>
               <h3 className="text-xl font-black text-gray-900 tracking-tight">
@@ -230,7 +218,6 @@ function Home() {
           </button>
         </div>
 
-        {/* High-Fidelity Conceptual "About Thudipp" Copy Area */}
         <div className="bg-white rounded-[28px] p-6 sm:p-8 border border-gray-100 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
             <div className="lg:col-span-2 flex flex-col justify-between space-y-4">
@@ -319,7 +306,6 @@ function Home() {
           </div>
         </div>
 
-        {/* Blood Donation Facts Section */}
         <div className="space-y-4">
           <div className="px-1">
             <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
