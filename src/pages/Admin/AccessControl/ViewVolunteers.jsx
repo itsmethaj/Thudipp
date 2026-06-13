@@ -1,268 +1,200 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../supabase";
 import {
   UserRound,
   Phone,
   Mail,
   GraduationCap,
-  ShieldCheck,
   BadgeInfo,
   Lock,
   Unlock,
   Trash2,
+  Edit2,
 } from "lucide-react";
 
 function ViewVolunteers() {
-const [volunteers, setVolunteers] = useState([]);
+  const [volunteers, setVolunteers] = useState([]);
+  const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
 
-useEffect(() => {
-fetchVolunteers();
-}, []);
-
-async function fetchVolunteers() {
-const { data, error } = await supabase
-.from("users")
-.select("*")
-.eq("role", "volunteer")
-.order("id", { ascending: false });
-
-if (!error) {
-  setVolunteers(data || []);
-}
-
-}
-async function toggleStatus(id, active) {
-  const volunteer = volunteers.find((v) => v.id === id);
-
-  const { error } = await supabase
-    .from("users")
-    .update({
-      active: !active,
-    })
-    .eq("id", id);
-
-  if (!error) {
-    await supabase.from("activity_logs").insert([
-      {
-        action: active ? "Volunteer Blocked" : "Volunteer Unblocked",
-
-        admission_no: volunteer.admission_no,
-
-        performed_by: user.username,
-
-        created_at: new Date().toISOString(),
-      },
-    ]);
-
+  useEffect(() => {
     fetchVolunteers();
+  }, []);
+
+  async function fetchVolunteers() {
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("role", "volunteer")
+      .order("id", { ascending: false });
+
+    if (!error) {
+      setVolunteers(data || []);
+    }
   }
-}
 
-async function deleteVolunteer(id) {
-  const confirmDelete = window.confirm("Delete this volunteer?");
+  async function toggleStatus(id, active) {
+    const volunteer = volunteers.find((v) => v.id === id);
 
-  if (!confirmDelete) return;
+    const { error } = await supabase
+      .from("users")
+      .update({ active: !active })
+      .eq("id", id);
 
-  const volunteer = volunteers.find((v) => v.id === id);
-
-  const { error } = await supabase.from("users").delete().eq("id", id);
-
-  if (!error) {
-    await supabase.from("activity_logs").insert([
-      {
-        action: "Volunteer Deleted",
-
-        admission_no: volunteer.admission_no,
-
-        performed_by: user.username,
-
-        created_at: new Date().toISOString(),
-      },
-    ]);
-
-    fetchVolunteers();
+    if (!error) {
+      await supabase.from("activity_logs").insert([
+        {
+          action: active ? "Volunteer Blocked" : "Volunteer Unblocked",
+          actor_username: currentUser.username,
+          actor_role: currentUser.role,
+          target_type: "VOLUNTEER",
+          target_admission_no: volunteer.admission_no,
+          details: `${active ? "Blocked" : "Unblocked"} volunteer account for ${volunteer.full_name}`,
+        },
+      ]);
+      fetchVolunteers();
+    }
   }
-}
 
-return (
-  <div className="min-h-screen pt-25 bg-[#F8F8F8] p-4">
-    {" "}
-    <div className="max-w-6xl mx-auto">
-      <div className="bg-white rounded-3xl max-w-6xl text-center p-6 mx-auto  shadow-sm mb-5">
-        <h1 className="text-3xl font-black text-[#B3001B] ">
-          Volunteers
-        </h1>
-      </div>
-      <div className="space-y-4">
-        {volunteers.map((volunteer) => (
-          <div
-            key={volunteer.id}
-            className="
-    bg-white
-    rounded-[28px]
-    border border-gray-100
-    shadow-[0_10px_40px_rgba(0,0,0,0.06)]
-    p-5
-  "
-          >
-            <div className="flex justify-between items-start">
-              <div className="flex gap-3">
-                <div
-                  className="
-          w-14 h-14
-          rounded-2xl
-          bg-red-50
-          flex items-center justify-center
-        "
-                >
-                  <UserRound size={24} className="text-[#B3001B]" />
-                </div>
+  async function deleteVolunteer(id) {
+    const confirmDelete = window.confirm("Delete this volunteer?");
+    if (!confirmDelete) return;
 
-                <div>
-                  <h2 className="text-lg font-bold text-gray-900">
-                    {volunteer.full_name || "No Name"}
-                  </h2>
+    const volunteer = volunteers.find((v) => v.id === id);
 
-                  <div
-                    className="
-            inline-flex
-            items-center
-            gap-1
-            bg-gray-100
-            px-3
-            py-1
-            rounded-full
-            text-xs
-            font-medium
-            mt-1
-          "
-                  >
-                    <BadgeInfo size={12} />
-                    {volunteer.admission_no}
+    const { error } = await supabase.from("users").delete().eq("id", id);
+
+    if (!error) {
+      await supabase.from("activity_logs").insert([
+        {
+          action: "Volunteer Deleted",
+          actor_username: currentUser.username,
+          actor_role: currentUser.role,
+          target_type: "VOLUNTEER",
+          target_admission_no: volunteer.admission_no,
+          details: `Deleted volunteer account for ${volunteer.full_name}`,
+        },
+      ]);
+      fetchVolunteers();
+    }
+  }
+
+  return (
+    <div className="min-h-screen pt-25 bg-[#F8F8F8] p-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="bg-white rounded-3xl max-w-6xl text-center p-6 mx-auto shadow-sm mb-5">
+          <h1 className="text-3xl font-black text-[#B3001B]">Volunteers</h1>
+        </div>
+
+        <div className="space-y-4">
+          {volunteers.map((volunteer) => (
+            <div
+              key={volunteer.id}
+              className="bg-white rounded-[28px] border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.06)] p-5"
+            >
+              <div className="flex justify-between items-start">
+                <div className="flex gap-3">
+                  <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center">
+                    <UserRound size={24} className="text-[#B3001B]" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold text-gray-900">
+                      {volunteer.full_name || "No Name"}
+                    </h2>
+                    <div className="inline-flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full text-xs font-medium mt-1">
+                      <BadgeInfo size={12} />
+                      {volunteer.admission_no}
+                    </div>
                   </div>
                 </div>
+                <div
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold ${volunteer.active ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+                >
+                  {volunteer.active ? "Active" : "Blocked"}
+                </div>
               </div>
 
-              <div
-                className={`
-        px-3 py-1.5
-        rounded-full
-        text-xs
-        font-semibold
-        ${
-          volunteer.active
-            ? "bg-green-100 text-green-700"
-            : "bg-red-100 text-red-700"
-        }
-      `}
-              >
-                {volunteer.active ? "Active" : "Blocked"}
+              <div className="grid gap-3 mt-5">
+                <div className="flex items-center gap-3">
+                  <Mail size={16} />
+                  <span className="text-sm">{volunteer.email}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone size={16} />
+                  <span className="text-sm">{volunteer.phone}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <GraduationCap size={16} />
+                  <span className="text-sm">{volunteer.course}</span>
+                </div>
+              </div>
+
+              <div className="mt-5">
+                <h3 className="font-semibold text-sm mb-2">Permissions</h3>
+                <div className="flex flex-wrap gap-2">
+                  {volunteer.permissions &&
+                    Object.entries(volunteer.permissions)
+                      .filter(([, value]) => value)
+                      .map(([key]) => (
+                        <span
+                          key={key}
+                          className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-medium capitalize"
+                        >
+                          {key.replaceAll("_", " ")}
+                        </span>
+                      ))}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-3 mt-6">
+                <button
+                  onClick={() =>
+                    navigate(`/admin/edit-volunteer/${volunteer.id}`)
+                  }
+                  className="flex-1 min-w-[120px] bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 rounded-2xl font-semibold flex items-center justify-center gap-2 transition-colors"
+                >
+                  <Edit2 size={18} />
+                  Edit / Keys
+                </button>
+
+                <button
+                  onClick={() => toggleStatus(volunteer.id, volunteer.active)}
+                  className={`flex-1 min-w-[120px] py-3 rounded-2xl text-white font-semibold flex items-center justify-center gap-2 ${volunteer.active ? "bg-orange-500" : "bg-green-600"}`}
+                >
+                  {volunteer.active ? (
+                    <>
+                      <Lock size={18} />
+                      Block
+                    </>
+                  ) : (
+                    <>
+                      <Unlock size={18} />
+                      Unblock
+                    </>
+                  )}
+                </button>
+
+                <button
+                  onClick={() => deleteVolunteer(volunteer.id)}
+                  className="flex-1 min-w-[120px] bg-red-600 text-white py-3 rounded-2xl font-semibold flex items-center justify-center gap-2"
+                >
+                  <Trash2 size={18} />
+                  Delete
+                </button>
               </div>
             </div>
+          ))}
 
-            <div className="grid gap-3 mt-5">
-              <div className="flex items-center gap-3">
-                <Mail size={16} />
-                <span className="text-sm">{volunteer.email}</span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Phone size={16} />
-                <span className="text-sm">{volunteer.phone}</span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <GraduationCap size={16} />
-                <span className="text-sm">{volunteer.course}</span>
-              </div>
+          {volunteers.length === 0 && (
+            <div className="bg-white rounded-3xl p-6 text-center shadow-md">
+              No Volunteers Found
             </div>
-
-            <div className="mt-5">
-              <h3 className="font-semibold text-sm mb-2">Permissions</h3>
-
-              <div className="flex flex-wrap gap-2">
-                {volunteer.permissions &&
-                  Object.entries(volunteer.permissions)
-                    .filter(([, value]) => value)
-                    .map(([key]) => (
-                      <span
-                        key={key}
-                        className="
-                bg-blue-50
-                text-blue-700
-                px-3
-                py-1
-                rounded-full
-                text-xs
-                font-medium
-              "
-                      >
-                        {key.replaceAll("_", " ")}
-                      </span>
-                    ))}
-              </div>
-            </div>
-
-            <div className="flex gap-3 mt-6">
-              <button
-                onClick={() => toggleStatus(volunteer.id, volunteer.active)}
-                className={`
-        flex-1
-        py-3
-        rounded-2xl
-        text-white
-        font-semibold
-        flex
-        items-center
-        justify-center
-        gap-2
-        ${volunteer.active ? "bg-orange-500" : "bg-green-600"}
-      `}
-              >
-                {volunteer.active ? (
-                  <>
-                    <Lock size={18} />
-                    Block
-                  </>
-                ) : (
-                  <>
-                    <Unlock size={18} />
-                    Unblock
-                  </>
-                )}
-              </button>
-
-              <button
-                onClick={() => deleteVolunteer(volunteer.id)}
-                className="
-        flex-1
-        bg-red-600
-        text-white
-        py-3
-        rounded-2xl
-        font-semibold
-        flex
-        items-center
-        justify-center
-        gap-2
-      "
-              >
-                <Trash2 size={18} />
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
-
-        {volunteers.length === 0 && (
-          <div className="bg-white rounded-3xl p-6 text-center shadow-md">
-            No Volunteers Found
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default ViewVolunteers;

@@ -341,7 +341,6 @@ function Home() {
           </div>
         </div>
 
-        {/* FAQ Grid Section */}
         <div className="space-y-4">
           <div className="px-1">
             <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
@@ -372,22 +371,23 @@ function Home() {
           </div>
         </div>
 
-        {/* Footer */}
         <footer className="text-center pt-10 pb-4 border-t border-gray-200/50">
-          <h3 className="font-black text-[#B3001B] text-lg tracking-wider flex items-center justify-center gap-1.5">
-            THUDIPP <span className="animate-pulse text-sm">❤️</span>
+          <h3 className="font-black text-[#B3001B] text-lg tracking-wider flex items-center justify-center gap-2">
+            THUDIPP
+            <img
+              src="/logo .png"
+              className="w-12 h-12 animate-pulse opacity-90 object-contain transform -translate-y-2" // Kept w-12 h-12, added -translate-y-1 to nudge it up
+              alt="Thudipp Logo"
+            />
           </h3>
           <p className="text-gray-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest mt-1">
             Interactive System Preview • Blueprint Concept Framework
           </p>
         </footer>
       </div>
-
-      {/* ⚠️ Premium One-Time Announcement Startup Modal */}
       {showNotice && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md transition-all duration-300 animate-fadeIn">
           <div className="bg-white rounded-[28px] max-w-lg w-full p-6 sm:p-8 border border-gray-100 shadow-2xl relative space-y-5 animate-scaleUp">
-            {/* Top Close Icon Button */}
             <button
               onClick={handleCloseNotice}
               className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 transition-colors p-1 bg-gray-50 hover:bg-gray-100 rounded-full"
@@ -395,7 +395,6 @@ function Home() {
               <X size={18} />
             </button>
 
-            {/* Title Block Header */}
             <div className="flex items-center gap-3">
               <div className="p-2.5 bg-amber-50 text-amber-600 rounded-xl">
                 <AlertTriangle size={22} />
@@ -410,7 +409,6 @@ function Home() {
               </div>
             </div>
 
-            {/* Informational Summary Main Text Track Block */}
             <div className="text-gray-500 text-xs sm:text-sm leading-relaxed font-medium space-y-3.5">
               <p>
                 Welcome to{" "}
@@ -430,7 +428,6 @@ function Home() {
                 workflows.
               </p>
 
-              {/* Refined Safety Demo Trace Sub-Notice */}
               <div className="bg-gray-50 border border-gray-100 rounded-xl p-3.5 mt-2">
                 <p className="text-[11px] sm:text-xs text-gray-600 font-semibold flex items-center gap-1.5">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#B3001B]" />
@@ -442,7 +439,6 @@ function Home() {
               </div>
             </div>
 
-            {/* Acknowledgment Action Button Layer */}
             <button
               onClick={handleCloseNotice}
               className="w-full bg-gray-900 hover:bg-black text-white py-3.5 rounded-xl font-bold tracking-wide text-xs sm:text-sm shadow-md transition-all duration-150 active:scale-[0.99]"

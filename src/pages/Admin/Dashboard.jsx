@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Analytics from "./Analytics";
-
 import {
   UserPlus,
   Users,
@@ -11,7 +10,7 @@ import {
   ClipboardList,
   LogOut,
   ChevronRight,
-  Image, // Imported for the new banner management card
+  Image,
 } from "lucide-react";
 
 function Dashboard() {
@@ -60,14 +59,15 @@ function Dashboard() {
         user.role === "admin" ? "/admin/export-pdf" : "/volunteer/export-pdf",
       permission: "export_pdf",
     },
-    /* 🚀 NEW: Admin-only Banner Upload Management Card */
     {
       title: "Manage Banners",
       description: "Upload homepage carousel sliders",
       icon: Image,
-      page: "/admin/manage-banners",
-      permission: "manage_banners", // Fallback permission string if needed later
-      adminOnly: true,
+      page:
+        user.role === "admin"
+          ? "/admin/manage-banners"
+          : "/volunteer/manage-banners",
+      permission: "manage_banners",
     },
     {
       title: "Access Control",
@@ -110,44 +110,17 @@ function Dashboard() {
               <button
                 key={action.title}
                 onClick={() => navigate(action.page)}
-                className="
-                  bg-white
-                  rounded-3xl
-                  p-5
-                  min-h-[150px]
-                  shadow-sm
-                  border
-                  border-gray-100
-                  hover:shadow-md
-                  hover:border-red-100/50
-                  transition-all
-                  duration-300
-                  text-left
-                  group
-                "
+                className="bg-white rounded-3xl p-5 min-h-[150px] shadow-sm border border-gray-100 hover:shadow-md hover:border-red-100/50 transition-all duration-300 text-left group"
               >
                 <div className="flex items-start justify-between">
-                  <div
-                    className="
-                      w-12 h-12
-                      rounded-2xl
-                      bg-red-50
-                      flex
-                      items-center
-                      justify-center
-                      transition-colors
-                      group-hover:bg-[#B3001B]/5
-                    "
-                  >
+                  <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center transition-colors group-hover:bg-[#B3001B]/5">
                     <Icon size={22} className="text-[#B3001B]" />
                   </div>
-
                   <ChevronRight
                     size={18}
                     className="text-gray-400 transition-transform group-hover:translate-x-0.5"
                   />
                 </div>
-
                 <h3 className="font-bold text-gray-900 mt-4 group-hover:text-[#B3001B] transition-colors">
                   {action.title}
                 </h3>
@@ -165,23 +138,7 @@ function Dashboard() {
             localStorage.removeItem("permissions");
             navigate("/login");
           }}
-          className="
-            mt-6
-            w-full
-            bg-red-600
-            hover:bg-red-700
-            text-white
-            py-4
-            rounded-2xl
-            font-semibold
-            flex
-            items-center
-            justify-center
-            gap-2
-            shadow-sm
-            active:scale-[0.99]
-            transition-all
-          "
+          className="mt-6 w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-2xl font-semibold flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] transition-all"
         >
           <LogOut size={18} />
           Logout

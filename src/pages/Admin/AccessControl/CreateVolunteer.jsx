@@ -21,6 +21,7 @@ function CreateVolunteer() {
     export_pdf: false,
     view_analytics: false,
     manage_volunteers: false,
+    manage_banners: false,
   });
 
   async function checkVolunteer() {
@@ -51,7 +52,6 @@ function CreateVolunteer() {
 
     if (existingUser) {
       alert(`Already a volunteer account (${existingUser.username})`);
-
       setVolunteer(null);
       return;
     }
@@ -91,15 +91,12 @@ function CreateVolunteer() {
         username: email,
         email,
         password,
-
         role: "volunteer",
         active: true,
-
         full_name: volunteer.name,
         phone: volunteer.phone,
         course: volunteer.course,
         year_of_study: volunteer.year_joined,
-
         permissions,
       },
     ]);
@@ -127,16 +124,13 @@ function CreateVolunteer() {
     }
 
     alert("Volunteer created successfully");
-
     navigate("/admin/view-volunteers");
   }
 
   return (
-    <div className="min-h-screen pt-25  bg-[#F8F8F8] p-4">
-      <div className="bg-white rounded-3xl max-w-6xl text-center p-6 mx-auto  shadow-sm mb-5">
-        <h1 className="text-3xl font-black text-[#B3001B] ">
-          Create Volunteer
-        </h1>
+    <div className="min-h-screen pt-25 bg-[#F8F8F8] p-4">
+      <div className="bg-white rounded-3xl max-w-6xl text-center p-6 mx-auto shadow-sm mb-5">
+        <h1 className="text-3xl font-black text-[#B3001B]">Create Volunteer</h1>
       </div>
       <div className="max-w-6xl mx-auto bg-white rounded-3xl p-6 shadow-md">
         <div className="flex gap-2 mb-6">
@@ -147,7 +141,6 @@ function CreateVolunteer() {
             onChange={(e) => setAdmissionNo(e.target.value)}
             className="flex-1 border rounded-xl p-3"
           />
-
           <button
             type="button"
             onClick={checkVolunteer}
@@ -163,7 +156,6 @@ function CreateVolunteer() {
               <h2 className="text-xl font-bold text-[#B3001B]">
                 Donor Information
               </h2>
-
               <p>
                 <strong>Name:</strong> {volunteer.name}
               </p>
@@ -218,18 +210,17 @@ function CreateVolunteer() {
             />
 
             <div className="space-y-4">
-              {/* Dashboard Features */}
               <div className="border rounded-2xl p-4">
                 <h2 className="font-bold text-lg mb-3 text-[#B3001B]">
                   Dashboard Features
                 </h2>
-
                 {[
                   ["add_donor", "Add Donor"],
                   ["view_donors", "View Donors"],
                   ["view_analytics", "Analytics"],
                   ["archive", "Archive"],
                   ["export_pdf", "Export PDF"],
+                  ["manage_banners", "Manage Banners"],
                   ["activity_logs", "Activity Logs"],
                 ].map(([key, label]) => (
                   <label key={key} className="flex items-center gap-3 mb-2">
@@ -238,19 +229,16 @@ function CreateVolunteer() {
                       checked={permissions[key]}
                       onChange={() => togglePermission(key)}
                     />
-
                     <span>{label}</span>
                   </label>
                 ))}
               </div>
 
-              {/* Donor Actions */}
               {permissions.view_donors && (
                 <div className="border rounded-2xl p-4">
                   <h2 className="font-bold text-lg mb-3 text-[#B3001B]">
                     Donor Permissions
                   </h2>
-
                   {[
                     ["edit_donor", "Edit Donor"],
                     ["archive_donor", "Archive Donor"],
@@ -262,20 +250,17 @@ function CreateVolunteer() {
                         checked={permissions[key]}
                         onChange={() => togglePermission(key)}
                       />
-
                       <span>{label}</span>
                     </label>
                   ))}
                 </div>
               )}
 
-              {/* Visible Donor Information */}
               {permissions.view_donors && (
                 <div className="border rounded-2xl p-4">
                   <h2 className="font-bold text-lg mb-3 text-[#B3001B]">
                     Visible Donor Information
                   </h2>
-
                   {[
                     ["view_phone", "Phone Number"],
                     ["view_address", "Address"],
@@ -288,7 +273,6 @@ function CreateVolunteer() {
                         checked={permissions[key]}
                         onChange={() => togglePermission(key)}
                       />
-
                       <span>{label}</span>
                     </label>
                   ))}
