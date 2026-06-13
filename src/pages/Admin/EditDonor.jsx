@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase";
+import { ArrowLeft, Save } from "lucide-react";
 
 function EditDonor() {
   const navigate = useNavigate();
-
   const donorId = localStorage.getItem("editDonorId");
+
   const [originalData, setOriginalData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-
   const permissions = JSON.parse(localStorage.getItem("permissions")) || {};
-
   const isAdmin = user?.role === "admin";
 
-  if (!isAdmin && !permissions.edit_donor) {
-    return <div className="p-10 text-center">Access Denied</div>;
-  }
+  const dashboardPath = isAdmin ? "/admin" : "/volunteer";
+  const listingPath = isAdmin ? "/admin/view-donors" : "/volunteer/view-donors";
 
-  const [loading, setLoading] = useState(true);
+  if (!isAdmin && !permissions.edit_donor) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-600 font-bold">
+        Access Denied
+      </div>
+    );
+  }
 
   const [formData, setFormData] = useState({
     admission_no: "",
@@ -38,49 +43,62 @@ function EditDonor() {
     fetchDonor();
   }, []);
 
-async function fetchDonor() {
-  const { data, error } = await supabase
-    .from("donors")
-    .select("*")
-    .eq("id", donorId)
-    .single();
+  async function fetchDonor() {
+    const { data, error } = await supabase
+      .from("donors")
+      .select("*")
+      .eq("id", donorId)
+      .single();
 
-  if (!error && data) {
-    setOriginalData(data);
-
-    setFormData({
-      admission_no: data.admission_no || "",
-      name: data.name || "",
-      blood_group: data.blood_group || "",
-      gender: data.gender || "",
-      phone: data.phone || "",
-      place: data.place || "",
-      address: data.address || "",
-      dob: data.dob || "",
-      course: data.course || "",
-      year_joined: data.year_joined || "",
-      available: data.available ?? true,
-    });
+    if (!error && data) {
+      setOriginalData(data);
+      setFormData({
+        admission_no: data.admission_no || "",
+        name: data.name || "",
+        blood_group: data.blood_group || "",
+        gender: data.gender || "",
+        phone: data.phone || "",
+        place: data.place || "",
+        address: data.address || "",
+        dob: data.dob || "",
+        course: data.course || "",
+        year_joined: data.year_joined || "",
+        available: data.available ?? true,
+      });
+    }
+    setLoading(false);
   }
-
-  setLoading(false);
-}
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
 
-    setFormData({
-      ...formData,
+    if (name === "name" || name === "place") {
+      const cleanValue = value.replace(/[^a-zA-Z\s]/g, "");
+      setFormData((prev) => ({ ...prev, [name]: cleanValue }));
+      return;
+    }
+
+    if (name === "phone" || name === "year_joined") {
+      const cleanValue = value.replace(/\D/g, "");
+      setFormData((prev) => ({ ...prev, [name]: cleanValue }));
+      return;
+    }
+
+    setFormData((prev) => ({
+      ...prev,
       [name]: type === "checkbox" ? checked : value,
-    });
+    }));
   }
 
-async function handleSubmit(e) {
-  e.preventDefault();
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-  if (
-    JSON.stringify(formData) ===
-    JSON.stringify({
+    if (formData.phone.length !== 10) {
+      alert("Error: Phone number must contain exactly 10 digits.");
+      return;
+    }
+
+    const cleanCompareObject = {
       admission_no: originalData.admission_no || "",
       name: originalData.name || "",
       blood_group: originalData.blood_group || "",
@@ -92,158 +110,266 @@ async function handleSubmit(e) {
       course: originalData.course || "",
       year_joined: originalData.year_joined || "",
       available: originalData.available ?? true,
-    })
-  ) {
-    alert("No changes made");
-    return;
-  }
+    };
 
-  const { error } = await supabase
-    .from("donors")
-    .update(formData)
-    .eq("id", donorId);
+    if (JSON.stringify(formData) === JSON.stringify(cleanCompareObject)) {
+      alert("No changes made");
+      return;
+    }
 
-  if (error) {
-    alert(error.message);
-    return;
-  }
+    const { error } = await supabase
+      .from("donors")
+      .update(formData)
+      .eq("id", donorId);
 
-  // Activity Log here
+    if (error) {
+      alert(error.message);
+      return;
+    }
 
-  alert("Donor updated successfully");
+    await supabase.from("activity_logs").insert([
+      {
+        actor_username: user.username,
+        actor_role: user.role,
+        action: "EDIT_DONOR",
+        target_type: "DONOR",
+        target_admission_no: formData.admission_no,
+        details: `Updated donor record for ${formData.name}`,
+      },
+    ]);
 
-  navigate("/admin/view-donors");
-}
+    alert("Donor updated successfully");
 
-  if (loading) {
-    return <div className="p-10 text-center">Loading...</div>;
+    navigate(dashboardPath, { replace: false });
+    setTimeout(() => {
+      navigate(listingPath, { replace: false });
+    }, 0);
   }
 
   return (
     <div className="min-h-screen pt-25 bg-[#F8F8F8] p-4">
-      <div className="max-w-xl mx-auto">
-        <button
-          onClick={() => navigate("/admin/view-donors")}
-          className="mb-4 bg-gray-200 px-4 py-2 rounded-xl"
-        >
-          ← Back
-        </button>
-
-        <h1 className="text-3xl font-black text-[#B3001B] mb-5">Edit Donor</h1>
+      <div className="max-w-6xl mx-auto">
+        <div className="flex items-center gap-4 bg-white rounded-3xl p-6 shadow-sm mb-5">
+          <button
+            type="button"
+            onClick={() => navigate(listingPath, { replace: true })}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <ArrowLeft size={24} className="text-gray-600" />
+          </button>
+          <h1 className="text-3xl font-black text-[#B3001B] flex-1 text-center pr-10">
+            Edit Donor: {formData.name || "Record"}
+          </h1>
+        </div>
 
         <form
           onSubmit={handleSubmit}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-            }
+            if (e.key === "Enter") e.preventDefault();
           }}
-          className="bg-white rounded-3xl p-5 shadow-md space-y-3"
+          className="bg-white rounded-[28px] border border-gray-100 shadow-md p-6 space-y-4"
         >
-          <input
-            type="text"
-            name="admission_no"
-            value={formData.admission_no}
-            onChange={handleChange}
-            placeholder="Admission Number"
-            className="w-full border rounded-xl p-3"
-            required
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                Admission Number
+              </label>
+              <input
+                type="text"
+                name="admission_no"
+                value={formData.admission_no}
+                onChange={handleChange}
+                placeholder="Admission Number"
+                className="w-full border rounded-xl p-3 text-sm"
+                required
+              />
+            </div>
 
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Name"
-            className="w-full border rounded-xl p-3"
-          />
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                Full Name (Alphabets Only)
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Name"
+                className="w-full border rounded-xl p-3 text-sm"
+                required
+              />
+            </div>
 
-          <input
-            type="text"
-            name="blood_group"
-            value={formData.blood_group}
-            onChange={handleChange}
-            placeholder="Blood Group"
-            className="w-full border rounded-xl p-3"
-          />
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                Blood Group
+              </label>
+              <select
+                name="blood_group"
+                value={formData.blood_group}
+                onChange={handleChange}
+                className="w-full border rounded-xl p-3 text-sm"
+                required
+              >
+                <option value="">Select Blood Group</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+                <option>O+</option>
+                <option>O-</option>
+              </select>
+            </div>
 
-          <input
-            type="text"
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            placeholder="Gender"
-            className="w-full border rounded-xl p-3"
-          />
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                Gender
+              </label>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="w-full border rounded-xl p-3 text-sm"
+                required
+              >
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
 
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="Phone"
-            className="w-full border rounded-xl p-3"
-          />
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                Phone Number (10 Digits Only)
+              </label>
+              <input
+                type="text"
+                name="phone"
+                maxLength={10}
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Phone"
+                className="w-full border rounded-xl p-3 text-sm"
+                required
+              />
+            </div>
 
-          <input
-            type="text"
-            name="place"
-            value={formData.place}
-            onChange={handleChange}
-            placeholder="Place"
-            className="w-full border rounded-xl p-3"
-          />
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                Place (Alphabets Only)
+              </label>
+              <input
+                type="text"
+                name="place"
+                value={formData.place}
+                onChange={handleChange}
+                placeholder="Place"
+                className="w-full border rounded-xl p-3 text-sm"
+                required
+              />
+            </div>
 
-          <textarea
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            placeholder="Address"
-            className="w-full border rounded-xl p-3"
-          />
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                name="dob"
+                value={formData.dob}
+                onChange={handleChange}
+                onKeyDown={(e) => e.preventDefault()}
+                onClick={(e) => e.target.showPicker?.()}
+                className="w-full border rounded-xl p-3 text-sm cursor-pointer select-none"
+                required
+              />
+            </div>
 
-          <input
-            type="date"
-            name="dob"
-            value={formData.dob}
-            onChange={handleChange}
-            className="w-full border rounded-xl p-3"
-          />
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                Year Joined (Numbers Only)
+              </label>
+              <input
+                type="text"
+                name="year_joined"
+                maxLength={4}
+                value={formData.year_joined}
+                onChange={handleChange}
+                placeholder="Year Joined"
+                className="w-full border rounded-xl p-3 text-sm"
+                required
+              />
+            </div>
+          </div>
 
-          <input
-            type="text"
-            name="course"
-            value={formData.course}
-            onChange={handleChange}
-            placeholder="Course"
-            className="w-full border rounded-xl p-3"
-          />
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">
+              Course
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                "BA ENGLISH",
+                "BA ECONOMICS",
+                "BA JOURNALISM",
+                "BA POLITICAL",
+                "BA SOCIOLOGY",
+                "BSC PSYCHOLOGY",
+                "BCOM CO-OP",
+                "BCOM FINANCE",
+                "BSC CS",
+              ].map((course) => (
+                <button
+                  type="button"
+                  key={course}
+                  onClick={() => setFormData({ ...formData, course })}
+                  className={`h-11 px-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                    formData.course === course
+                      ? "bg-[#B3001B] text-white shadow-md"
+                      : "bg-white text-[#B3001B] border border-red-100 hover:bg-red-50/30"
+                  }`}
+                >
+                  {course}
+                </button>
+              ))}
+            </div>
+          </div>
 
-          <input
-            type="number"
-            name="year_joined"
-            value={formData.year_joined}
-            onChange={handleChange}
-            placeholder="Year Joined"
-            className="w-full border rounded-xl p-3"
-          />
-
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="available"
-              checked={formData.available}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">
+              Address
+            </label>
+            <textarea
+              name="address"
+              value={formData.address}
               onChange={handleChange}
+              placeholder="Address"
+              rows="3"
+              className="w-full border rounded-xl p-3 text-sm"
+              required
             />
-            Available
-          </label>
+          </div>
+
+          <div className="pt-2">
+            <label className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100 cursor-pointer w-max text-sm font-semibold select-none">
+              <input
+                type="checkbox"
+                name="available"
+                checked={formData.available}
+                onChange={handleChange}
+                className="w-4 h-4 accent-[#B3001B]"
+              />
+              Available to Donate
+            </label>
+          </div>
 
           <button
             type="submit"
-            className="w-full bg-[#B3001B] text-white py-3 rounded-xl font-semibold"
+            className="w-full bg-[#B3001B] hover:bg-[#910014] text-white py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 shadow-md transition-colors mt-4"
           >
-            Update Donor
+            <Save size={22} />
+            Save Changes
           </button>
         </form>
       </div>

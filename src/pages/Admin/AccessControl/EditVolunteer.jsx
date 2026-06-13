@@ -118,7 +118,11 @@ function EditVolunteer() {
     }
 
     alert("Volunteer configuration updated successfully");
-    navigate("/admin/view-volunteers");
+
+    navigate("/admin", { replace: false });
+    setTimeout(() => {
+      navigate("/admin/view-volunteers", { replace: false });
+    }, 0);
   }
 
   if (loading) {
@@ -142,7 +146,10 @@ function EditVolunteer() {
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-4 bg-white rounded-3xl p-6 shadow-sm mb-5">
           <button
-            onClick={() => navigate("/admin/view-volunteers")}
+            type="button"
+            onClick={() =>
+              navigate("/admin/view-volunteers", { replace: true })
+            }
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <ArrowLeft size={24} className="text-gray-600" />

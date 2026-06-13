@@ -124,7 +124,7 @@ function CreateVolunteer() {
     }
 
     alert("Volunteer created successfully");
-    navigate("/admin/view-volunteers");
+    navigate("/admin/view-volunteers", { replace: true });
   }
 
   return (

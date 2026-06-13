@@ -14,6 +14,29 @@ import {
   YAxis,
 } from "recharts";
 
+// Premium locked custom tooltip
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const isLineChart = label !== undefined;
+    const title = isLineChart ? label : payload[0].payload.group;
+    const displayValue = isLineChart
+      ? `count : ${payload[0].value}`
+      : `${payload[0].payload.group} : ${payload[0].value}`;
+
+    return (
+      <div className="bg-white px-3 py-1.5 rounded-xl border border-gray-100 shadow-xl text-center min-w-[75px] pointer-events-none select-none">
+        <p className="text-gray-500 text-[11px] font-medium tracking-wide m-0 leading-tight">
+          {title}
+        </p>
+        <p className="text-[#B3001B] text-xs font-black m-0 mt-0.5 leading-tight whitespace-nowrap">
+          {displayValue}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
 function Analytics() {
   const [donors, setDonors] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
@@ -49,6 +72,23 @@ function Analytics() {
 
   return (
     <div className="w-full">
+      {/* Global CSS Injector to explicitly eliminate active wrapper borders on click */}
+      <style>{`
+        .recharts-tooltip-wrapper, 
+        .recharts-wrapper, 
+        .recharts-surface {
+          outline: none !important;
+          border: none !important;
+          box-shadow: none !important;
+          -webkit-tap-highlight-color: transparent !important;
+        }
+        path.recharts-rectangle:focus, 
+        path.recharts-sector:focus,
+        .recharts-curve:focus {
+          outline: none !important;
+        }
+      `}</style>
+
       <div className="mt-4">
         <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-4">
           <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-md flex flex-col justify-between">
@@ -120,6 +160,7 @@ function Analytics() {
               </span>
             </div>
           </div>
+
           <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 shadow-md flex flex-col justify-between">
             <h3 className="font-bold text-xs sm:text-base lg:text-lg text-center mb-2 sm:mb-4 text-gray-800">
               Blood Groups
@@ -169,12 +210,18 @@ function Analytics() {
                           textAnchor="middle"
                           dominantBaseline="middle"
                           transform={`rotate(${rotation} ${x} ${y})`}
-                          
                         >
-                         <tspan x={x} dy="-4">{name}</tspan>
-      <tspan x={x} dy="10" fontSize="10" fontWeight="normal">
-        {value}%
-      </tspan>
+                          <tspan x={x} dy="-4">
+                            {name}
+                          </tspan>
+                          <tspan
+                            x={x}
+                            dy="10"
+                            fontSize="10"
+                            fontWeight="normal"
+                          >
+                            {value}%
+                          </tspan>
                         </text>
                       );
                     }}
@@ -189,14 +236,20 @@ function Analytics() {
                     <Cell fill="#6A040F" />
                   </Pie>
 
-                  <Tooltip />
+                  <Tooltip
+                    content={<CustomTooltip />}
+                    cursor={false}
+                    wrapperStyle={{ pointerEvents: "none" }}
+                    useTranslate3d={true}
+                  />
+
                   <text
                     x="50%"
                     y="46%"
                     textAnchor="middle"
                     dominantBaseline="middle"
                     fill="#111827"
-                    className="text-xs sm:text-base font-black"
+                    className="text-xs sm:text-base font-black select-none pointer-events-none"
                   >
                     {totalDonors}
                   </text>
@@ -206,7 +259,7 @@ function Analytics() {
                     textAnchor="middle"
                     dominantBaseline="middle"
                     fill="#6B7280"
-                    className="text-[9px] sm:text-xs font-semibold"
+                    className="text-[9px] sm:text-xs font-semibold select-none pointer-events-none"
                   >
                     Donors
                   </text>
@@ -215,6 +268,7 @@ function Analytics() {
             </div>
           </div>
         </div>
+
         <div className="bg-white rounded-2xl sm:rounded-3xl p-4 shadow-md">
           <h3 className="font-bold text-xs sm:text-base lg:text-lg text-center mb-3 text-gray-800">
             Year Joined
@@ -240,7 +294,13 @@ function Analytics() {
                   allowDecimals={false}
                   tick={{ fontSize: 10, fill: "#6B7280" }}
                 />
-                <Tooltip />
+
+                <Tooltip
+                  content={<CustomTooltip />}
+                  wrapperStyle={{ pointerEvents: "none" }}
+                  useTranslate3d={true}
+                />
+
                 <Line
                   type="monotone"
                   dataKey="count"
@@ -262,4 +322,6 @@ function Analytics() {
     </div>
   );
 }
+
 export default Analytics;
+  
