@@ -1,17 +1,17 @@
-# Thudipp
-=======
-# 🩸 Thudipp
-
 <p align="center">
-  <img src="./public/logo.png" alt="Thudipp Logo" width="120">
+  <img src="./public/logo .png" alt="Thudipp Logo" width="120">
 </p>
+<div align="center">
+  
+# THUDIPP
+  
+### The Pulse That Connects Lives
 
-<h3 align="center">The Thudipp That Connects Lives</h3>
-
-<p align="center">
 A privacy-focused blood donor management platform built for colleges and communities.
-</p>
----
+
+</div>
+
+
 
 ## About Thudipp
 
