@@ -28,9 +28,11 @@ function ExportPDF() {
 
   useEffect(() => {
     let isMounted = true;
+
     const convertLogoToBase64 = async () => {
       try {
-        const response = await fetch("./logo .png");
+        // 🌟 Fixed: Changed from the broken "./logo .png" to the direct root path "/logo.png"
+        const response = await fetch("/logo .png");
         const blob = await response.blob();
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -38,9 +40,10 @@ function ExportPDF() {
         };
         reader.readAsDataURL(blob);
       } catch (err) {
-        console.error("Logo missing from public directory:", err);
+        console.error("Logo failed to load from root path:", err);
       }
     };
+
     const fetchMasterData = async () => {
       try {
         setIsDataLoading(true);
@@ -63,6 +66,7 @@ function ExportPDF() {
         if (isMounted) setIsDataLoading(false);
       }
     };
+
     convertLogoToBase64();
     fetchMasterData();
     return () => {
@@ -133,6 +137,7 @@ function ExportPDF() {
       const doc = new jsPDF({ orientation: "l", format: "a4" });
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
+
       if (logoBase64) {
         try {
           doc.addImage(logoBase64, "PNG", (pageWidth - 14) / 2, 12, 14, 14);
@@ -140,11 +145,13 @@ function ExportPDF() {
           console.error("Failed to add logo to PDF render:", imgErr);
         }
       }
+
       const title = `THUDIPP ${reportType.toUpperCase()} REPORT`;
       doc.setFont("helvetica", "bold");
       doc.setFontSize(15);
       doc.setTextColor(179, 0, 27);
       doc.text(title, pageWidth / 2, 32, { align: "center" });
+
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
       doc.setTextColor(100, 100, 100);
@@ -154,6 +161,7 @@ function ExportPDF() {
         38,
         { align: "center" },
       );
+
       if (reportType === "donors") {
         autoTable(doc, {
           startY: 44,
@@ -309,6 +317,7 @@ function ExportPDF() {
           },
         });
       }
+
       const totalPages = doc.internal.getNumberOfPages();
       for (let i = 1; i <= totalPages; i++) {
         doc.setPage(i);
@@ -326,7 +335,9 @@ function ExportPDF() {
           pageHeight - 10,
         );
       }
+
       doc.save(`thudipp-${reportType}-report.pdf`);
+
       try {
         const systemUser = JSON.parse(localStorage.getItem("user") || "{}");
         await supabase.from("activity_logs").insert([
