@@ -5,7 +5,7 @@
   
 # THUDIPP
   
-### The Pulse That Connects Lives
+### The Thudipp That Connects Lives
 
 A privacy-focused blood donor management platform built for colleges and communities.
 
